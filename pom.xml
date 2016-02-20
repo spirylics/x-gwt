@@ -28,14 +28,25 @@
 
     <repositories>
         <repository>
-            <id>oss-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <id>sonatype-nexus</id>
+            <name>Sonatype Nexus</name>
+            <url>http://repository.sonatype.org/content/groups/public/</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
     </repositories>
 
@@ -50,10 +61,21 @@
         </plugins>
     </build>
 
+    <prerequisites>
+        <maven>3.2.1</maven>
+    </prerequisites>
+
     <scm>
-        <connection>scm:git:https://bitbucket.org/appgng/waygng.git</connection>
-        <developerConnection>scm:git:https://bitbucket.org/appgng/waygng.git</developerConnection>
-        <url>https://bitbucket.org/appgng/waygng.git</url>
-        <tag>master</tag>
+        <connection>scm:git:https://github.com/spirylics/x-gwt.git</connection>
+        <developerConnection>scm:git:https://github.com/spirylics/x-gwt.git</developerConnection>
+        <url>https://github.com/spirylics/x-gwt.git</url>
+        <tag>HEAD</tag>
     </scm>
+
+    <licenses>
+        <license>
+            <name>Apache License Version 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
 </project>
