@@ -27,7 +27,6 @@
             <groupId>com.github.spirylics.xgwt</groupId>
             <artifactId>x-gwt-essential</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
