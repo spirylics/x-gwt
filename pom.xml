@@ -27,6 +27,7 @@
     </properties>
 
     <modules>
+        <module>x-gwt-essential</module>
         <module>x-gwt-firebase</module>
     </modules>
 
