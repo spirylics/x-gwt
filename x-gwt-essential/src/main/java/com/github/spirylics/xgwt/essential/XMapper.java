@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class Mapper {
+public class XMapper {
 
     final Map<Class<?>, ObjectMapper<?>> mappers;
     final Function<JsonBuilder, JavaScriptObject> jsonBuilderToJs = new Function<JsonBuilder, JavaScriptObject>() {
@@ -26,7 +26,7 @@ public class Mapper {
         }
     };
 
-    public Mapper(Map<Class<?>, ObjectMapper<?>> mappers) {
+    public XMapper(Map<Class<?>, ObjectMapper<?>> mappers) {
         this.mappers = mappers;
     }
 

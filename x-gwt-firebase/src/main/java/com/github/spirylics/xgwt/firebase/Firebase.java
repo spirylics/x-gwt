@@ -1,7 +1,7 @@
 package com.github.spirylics.xgwt.firebase;
 
 import com.github.spirylics.xgwt.essential.Fn;
-import com.github.spirylics.xgwt.essential.Mapper;
+import com.github.spirylics.xgwt.essential.XMapper;
 import com.google.common.base.Joiner;
 import com.google.gwt.core.client.JavaScriptObject;
 import jsinterop.annotations.JsConstructor;
@@ -13,7 +13,7 @@ import jsinterop.annotations.JsType;
 @JsType(isNative = true, namespace = JsPackage.GLOBAL)
 public class Firebase {
 
-    private static Mapper mapper;
+    private static XMapper xMapper;
     private Auth auth;
 
     @JsConstructor
@@ -21,9 +21,9 @@ public class Firebase {
     }
 
     @JsOverlay
-    public static final Firebase create(String location, Mapper mapper) {
-        Firebase.mapper = mapper;
-        XSnapshot.mapper = mapper;
+    public static final Firebase create(String location, XMapper xMapper) {
+        Firebase.xMapper = xMapper;
+        XSnapshot.xMapper = xMapper;
         final Firebase firebase = new Firebase(location);
         firebase.onAuth(new Fn.Arg<Auth>() {
             @Override
@@ -89,12 +89,12 @@ public class Firebase {
 
     @JsOverlay
     public final <D> Promise<Void, Error> xPush(D data) {
-        return push(mapper.toJso(data));
+        return push(xMapper.toJso(data));
     }
 
     @JsOverlay
     public final <D> Promise<Void, Error> xSet(D data) {
-        return set(mapper.toJso(data));
+        return set(xMapper.toJso(data));
     }
 
 
