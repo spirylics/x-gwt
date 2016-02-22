@@ -29,8 +29,10 @@ public class XStorage implements StorageEvent.Handler {
         this.storageMap = new StorageMap(storage);
         this.eventBus = eventBus;
         ImmutableMap.Builder<String, Class<?>> storageKeyClassBuilder = new ImmutableMap.Builder<>();
-        for (Class<?> clazz : xMapper.mappers.keySet()) {
-            storageKeyClassBuilder.put(clazz.getSimpleName(), clazz);
+        if (xMapper.mappers != null) {
+            for (Class<?> clazz : xMapper.mappers.keySet()) {
+                storageKeyClassBuilder.put(clazz.getSimpleName(), clazz);
+            }
         }
         this.storageKeyClass = storageKeyClassBuilder.build();
     }

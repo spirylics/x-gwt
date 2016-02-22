@@ -54,6 +54,7 @@
     <modules>
         <module>x-gwt-essential</module>
         <module>x-gwt-firebase</module>
+        <module>x-gwt-cordova</module>
         <module>x-gwt-all</module>
     </modules>
 

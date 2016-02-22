@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='xgwtessential'>
+    <inherits name='com.google.gwt.user.User'/>
+    <inherits name='com.github.spirylics.xgwt.essential'/>
+    <inherits name='com.googlecode.gwtphonegap.PhoneGap'/>
+    <set-property name="phonegap.logging.remoteHandler" value="DISABLED"/>
+    <set-property name="phonegap.logging.consoleHandler" value="DISABLED"/>
+    <source path='cordova'/>
+</module>
