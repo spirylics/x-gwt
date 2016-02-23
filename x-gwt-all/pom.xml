@@ -5,13 +5,13 @@
     <groupId>com.github.spirylics.xgwt</groupId>
     <artifactId>x-gwt-all</artifactId>
     <packaging>jar</packaging>
-    <version>1.3</version>
+    <version>1.3-SNAPSHOT</version>
     <name>${project.artifactId}</name>
 
     <parent>
         <groupId>com.github.spirylics.xgwt</groupId>
         <artifactId>x-gwt</artifactId>
-        <version>1.3</version>
+        <version>1.3-SNAPSHOT</version>
     </parent>
 
     <dependencies>
@@ -26,17 +26,17 @@
         <dependency>
             <groupId>com.github.spirylics.xgwt</groupId>
             <artifactId>x-gwt-essential</artifactId>
-            <version>1.3</version>
+            <version>1.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.spirylics.xgwt</groupId>
             <artifactId>x-gwt-firebase</artifactId>
-            <version>1.3</version>
+            <version>1.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.spirylics.xgwt</groupId>
             <artifactId>x-gwt-cordova</artifactId>
-            <version>1.3</version>
+            <version>1.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
