@@ -2,6 +2,7 @@ package com.github.spirylics.xgwt.essential;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.logging.client.NullLogHandler;
 
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class XLogger {
+public class XLogger implements GWT.UncaughtExceptionHandler {
     public final Logger logger;
     final String appName;
     final String appVersion;
@@ -24,11 +25,16 @@ public class XLogger {
         this.appVersion = appVersion;
     }
 
+    public XLogger logUncaughtException() {
+        GWT.setUncaughtExceptionHandler(this);
+        return this;
+    }
 
-    public void addHandlerIfNotNull(Handler h) {
+    public XLogger addHandlerIfNotNull(Handler h) {
         if (!(h instanceof NullLogHandler)) {
             logger.addHandler(h);
         }
+        return this;
     }
 
     public XLogger setPlatform(String platform) {
@@ -102,5 +108,10 @@ public class XLogger {
 
     public void finest(String format, Object... args) {
         log(Level.FINEST, format, args);
+    }
+
+    @Override
+    public void onUncaughtException(Throwable e) {
+        severe("Uncaught exception", e);
     }
 }

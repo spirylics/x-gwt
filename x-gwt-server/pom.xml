@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.spirylics.xgwt</groupId>
+    <artifactId>x-gwt-server</artifactId>
+    <packaging>jar</packaging>
+    <version>1.6-SNAPSHOT</version>
+    <name>${project.artifactId}</name>
+
+    <parent>
+        <groupId>com.github.spirylics.xgwt</groupId>
+        <artifactId>x-gwt</artifactId>
+        <version>1.6-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${version.servlet-api}</version>
+        </dependency>
+    </dependencies>
+
+</project>
