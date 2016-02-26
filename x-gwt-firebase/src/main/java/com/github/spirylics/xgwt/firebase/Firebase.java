@@ -38,6 +38,8 @@ public class Firebase {
 
     public native Promise<Auth, Error> authWithPassword(Credentials credentials);
 
+    public native Promise<Auth, Error> authAnonymously();
+
     public native Firebase child(String path);
 
     public native Promise<Auth, Error> createUser(Credentials credentials);
