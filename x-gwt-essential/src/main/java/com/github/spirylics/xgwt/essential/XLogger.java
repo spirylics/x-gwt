@@ -11,22 +11,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class XLogger implements GWT.UncaughtExceptionHandler {
-    public final Logger logger;
-    final String appName;
-    final String appVersion;
+    final Logger logger;
     final Joiner joiner = Joiner.on(": ").skipNulls();
+
+    String appName;
+    String appVersion;
     String platform;
     String version;
     String model;
 
-    public XLogger(Logger logger, String appName, String appVersion) {
+    public XLogger() {
+        this(System.getProperty("xgwt.logging.package"));
+    }
+
+    public XLogger(String loggingPackage) {
+        this(Logger.getLogger(loggingPackage));
+    }
+
+    public XLogger(Logger logger) {
         this.logger = logger;
-        this.appName = appName;
-        this.appVersion = appVersion;
     }
 
     public XLogger logUncaughtException() {
-        GWT.setUncaughtExceptionHandler(this);
+        XGWT.addUncaughtExceptionHandler(this);
         return this;
     }
 
@@ -34,6 +41,16 @@ public class XLogger implements GWT.UncaughtExceptionHandler {
         if (!(h instanceof NullLogHandler)) {
             logger.addHandler(h);
         }
+        return this;
+    }
+
+    public XLogger setAppName(String appName) {
+        this.appName = Strings.emptyToNull(appName);
+        return this;
+    }
+
+    public XLogger setAppVersion(String appVersion) {
+        this.appVersion = Strings.emptyToNull(appVersion);
         return this;
     }
 

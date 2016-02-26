@@ -20,5 +20,9 @@
     <set-property name="gwt.logging.systemHandler" value="DISABLED"/>
     <set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED"/>
     <set-property name="gwt.logging.xRemoteHandler" value="DISABLED"/>
+
+    <define-configuration-property name="xgwt.logging.package" is-multi-valued="false"/>
+    <set-configuration-property name="xgwt.logging.package" value=""/>
+
     <source path='essential'/>
 </module>
