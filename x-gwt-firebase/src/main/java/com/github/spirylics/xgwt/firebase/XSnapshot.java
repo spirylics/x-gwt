@@ -2,15 +2,14 @@ package com.github.spirylics.xgwt.firebase;
 
 import com.github.spirylics.xgwt.essential.Fn;
 import com.github.spirylics.xgwt.essential.XMapper;
-import com.google.gwt.core.client.JavaScriptObject;
 
 public class XSnapshot {
 
     static XMapper xMapper;
 
-    final Snapshot<JavaScriptObject> snapshot;
+    public final Snapshot<?> snapshot;
 
-    public XSnapshot(Snapshot<JavaScriptObject> snapshot) {
+    public XSnapshot(Snapshot<?> snapshot) {
         this.snapshot = snapshot;
     }
 
@@ -18,14 +17,18 @@ public class XSnapshot {
         return snapshot.key();
     }
 
+    public boolean exists() {
+        return snapshot.exists();
+    }
+
     public <V> V val(Class<V> clazz) {
-        return xMapper.readJso(snapshot.val(), clazz);
+        return xMapper.convert(snapshot.val(), clazz);
     }
 
     public boolean forEach(final Fn.Arg<XSnapshot> fn) {
-        return snapshot.forEach(new Fn.Arg<Snapshot<JavaScriptObject>>() {
+        return snapshot.forEach(new Fn.Arg<Snapshot<Object>>() {
             @Override
-            public void e(Snapshot<JavaScriptObject> snapshot) {
+            public void e(Snapshot<Object> snapshot) {
                 fn.e(new XSnapshot(snapshot));
             }
         });

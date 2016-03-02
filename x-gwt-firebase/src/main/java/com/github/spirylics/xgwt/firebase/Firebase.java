@@ -46,6 +46,8 @@ public class Firebase {
 
     public native <D> Fn.Arg<Snapshot<D>> on(String event, Fn.Arg<Snapshot<D>> fn);
 
+    public native <D> Promise<Snapshot<D>, Error> once(String event, Fn.Arg<Snapshot<D>> succes, Fn.Arg<Error> error);
+
     public native void off();
 
     public native void off(String event);
@@ -53,6 +55,8 @@ public class Firebase {
     public native <D> void off(String event, Fn.Arg<Snapshot<D>> fn);
 
     public native void onAuth(Fn.Arg<Auth> fn);
+
+    public native Firebase push();
 
     public native <D> Promise<Void, Error> push(D data);
 
@@ -90,13 +94,18 @@ public class Firebase {
     }
 
     @JsOverlay
+    public final void xOnce(final Event event, Fn.Arg<XSnapshot> sucess, Fn.Arg<Error> error) {
+        once(event.name(), wrapFn(sucess), error);
+    }
+
+    @JsOverlay
     public final <D> Promise<Void, Error> xPush(D data) {
-        return push(xMapper.toJso(data));
+        return push(xMapper.convert(data, JavaScriptObject.class));
     }
 
     @JsOverlay
     public final <D> Promise<Void, Error> xSet(D data) {
-        return set(xMapper.toJso(data));
+        return set(xMapper.convert(data, JavaScriptObject.class));
     }
 
 

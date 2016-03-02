@@ -4,4 +4,7 @@ import jsinterop.annotations.JsType;
 
 @JsType(isNative = true)
 public interface Error {
+    String getCode();
+
+    String getMessage();
 }

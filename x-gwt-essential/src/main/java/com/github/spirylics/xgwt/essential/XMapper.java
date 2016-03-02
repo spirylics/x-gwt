@@ -2,85 +2,111 @@ package com.github.spirylics.xgwt.essential;
 
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.common.base.Function;
-import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableMap;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.query.client.GQ;
+import com.google.gwt.query.client.IsProperties;
 import com.google.gwt.query.client.builders.JsonBuilder;
 import com.google.gwt.query.client.js.JsObjectArray;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 public class XMapper {
 
     final Map<Class<?>, ObjectMapper<?>> mappers;
-    final Function<JsonBuilder, JavaScriptObject> jsonBuilderToJs = new Function<JsonBuilder, JavaScriptObject>() {
-        @Nullable
-        @Override
-        public JavaScriptObject apply(JsonBuilder input) {
-            return toJso(input);
-        }
-    };
+    final Map<Class<?>, Function<String, ?>> readers;
 
     public XMapper(Map<Class<?>, ObjectMapper<?>> mappers) {
         this.mappers = mappers;
+        this.readers = new ImmutableMap.Builder<Class<?>, Function<String, ?>>()
+                .put(String.class, new Function<String, String>() {
+                    public String apply(String input) {
+                        return input;
+                    }
+                }).put(Boolean.class, new Function<String, Boolean>() {
+                    public Boolean apply(String input) {
+                        return Boolean.parseBoolean(input);
+                    }
+                }).put(Integer.class, new Function<String, Integer>() {
+                    public Integer apply(String input) {
+                        return new Integer(input);
+                    }
+                }).put(Float.class, new Function<String, Float>() {
+                    public Float apply(String input) {
+                        return new Float(input);
+                    }
+                }).put(Double.class, new Function<String, Double>() {
+                    public Double apply(String input) {
+                        return new Double(input);
+                    }
+                }).put(JSONObject.class, new Function<String, JSONObject>() {
+                    public JSONObject apply(String input) {
+                        return new JSONObject(JsonUtils.safeEval(input));
+                    }
+                })
+                .build();
     }
 
-    public <T> String write(T t) {
-        if (t == null) {
+
+    public <V> String write(V value) {
+        if (value == null) {
             return null;
+        } else if (value instanceof String || value instanceof Number || value instanceof Boolean) {
+            return String.valueOf(value);
+        } else {
+            return getMapper(value).write(value);
         }
-        return getMapper(t).write(t);
     }
 
-    public <T> JavaScriptObject writeJso(T t) {
-        return JsonUtils.safeEval(write(t));
-    }
-
-    public <T> T read(String input, Class<T> clazz) {
-        if (Strings.isNullOrEmpty(input)) {
+    public <V> V read(String input, Class<V> clazz) {
+        if (input == null) {
             return null;
+        } else if (readers.containsKey(clazz)) {
+            return (V) readers.get(clazz).apply(input);
+        } else {
+            return getMapper(clazz).read(input);
         }
-        return getMapper(clazz).read(input);
     }
 
-    public <T> T readJso(JavaScriptObject jso, Class<T> clazz) {
-        return read(JsonUtils.stringify(jso), clazz);
-    }
-
-    public JavaScriptObject toJso(JsonBuilder jsonBuilder) {
-        return JsonUtils.safeEval(jsonBuilder.toJson());
-    }
-
-    public <T> T fromJso(JavaScriptObject jso, Class clazz) {
-        return GQ.create(clazz).parse(JsonUtils.stringify(jso));
-    }
-
-    public <T> JavaScriptObject toJso(T t) {
-        if (t == null) {
+    public <V> V convert(Object object, Class<V> clazz) {
+        if (object == null) {
             return null;
+        } else if (object.getClass().equals(clazz)) {
+            return (V) object;
+        } else if (object instanceof String) {
+            return read((String) object, clazz);
+        } else if (object instanceof Collection) {
+            Collection<?> objects = (Collection<?>) object;
+            if (JavaScriptObject.class.equals(clazz)) {
+                JsObjectArray<JavaScriptObject> jsArray = JsObjectArray.create();
+                for (Object o : objects) {
+                    jsArray.add(convert(o, JavaScriptObject.class));
+                }
+                return (V) jsArray;
+            }
+        } else if (object instanceof JsonBuilder) {
+            JsonBuilder jsonBuilder = (JsonBuilder) object;
+            if (JavaScriptObject.class.equals(clazz)) {
+                return jsonBuilder.getDataImpl();
+            } else {
+                return convert(jsonBuilder.getDataImpl(), clazz);
+            }
+        } else if (object instanceof JavaScriptObject) {
+            JavaScriptObject jso = (JavaScriptObject) object;
+            if (JSONObject.class.equals(clazz)) {
+                return (V) new JSONObject(jso);
+            } else {
+                return read(JsonUtils.stringify(jso), clazz);
+            }
         }
-        return JsonUtils.safeEval(getMapper(t).write(t));
+        throw new UnsupportedOperationException("Conversion not supported: object=" + String.valueOf(object) + ",clazz=" + String.valueOf(clazz));
     }
 
-    public <T> JsObjectArray<JavaScriptObject> toJsoArray(List<T> tList) {
-        JsObjectArray<JavaScriptObject> jsArray = JsObjectArray.create();
-        for (T t : tList) {
-            jsArray.add(toJso(t));
-        }
-        return jsArray;
-    }
-
-    public JsObjectArray<JavaScriptObject> toJsoArray(Collection<? extends JsonBuilder> jsonBuilders) {
-        JsObjectArray<JavaScriptObject> jsSuggestions = JsObjectArray.create();
-        JavaScriptObject[] jsArray = new JavaScriptObject[jsonBuilders.size()];
-        Collections2.transform(jsonBuilders, jsonBuilderToJs).toArray(jsArray);
-        jsSuggestions.add(jsArray);
-        return jsSuggestions;
+    public <V extends JsonBuilder> V convert(JavaScriptObject jso, Class<V> clazz) {
+        return GQ.create(clazz, (IsProperties) jso);
     }
 
     <T> ObjectMapper<T> getMapper(T t) {
