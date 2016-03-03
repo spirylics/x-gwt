@@ -17,6 +17,11 @@ public abstract class Fn {
     }
 
     @JsFunction
+    public interface ArgRet<A, R> {
+        R e(A arg);
+    }
+
+    @JsFunction
     public interface Args {
         void e(Object... args);
     }

@@ -46,7 +46,9 @@ public class Firebase {
 
     public native <D> Fn.Arg<Snapshot<D>> on(String event, Fn.Arg<Snapshot<D>> fn);
 
-    public native <D> Promise<Snapshot<D>, Error> once(String event, Fn.Arg<Snapshot<D>> succes, Fn.Arg<Error> error);
+    public native <D> void once(String event, Fn.Arg<Snapshot<D>> succes, Fn.Arg<Error> error);
+
+    public native <D> Promise<Snapshot<D>, Error> once(String event);
 
     public native void off();
 
@@ -79,23 +81,38 @@ public class Firebase {
     }
 
     @JsOverlay
-    public final <D> Fn.Arg<Snapshot<JavaScriptObject>> wrapFn(final Fn.Arg<XSnapshot> fn) {
-        return new Fn.Arg<Snapshot<JavaScriptObject>>() {
+    public final <D> Fn.Arg<Snapshot<D>> wrapFn(final Fn.Arg<XSnapshot> fn) {
+        return new Fn.Arg<Snapshot<D>>() {
             @Override
-            public void e(Snapshot<JavaScriptObject> data) {
+            public void e(Snapshot<D> data) {
                 fn.e(new XSnapshot(data));
             }
         };
     }
 
     @JsOverlay
-    public final <D> Fn.Arg<Snapshot<JavaScriptObject>> xOn(Event event, final Fn.Arg<XSnapshot> fn) {
-        return on(event.name(), wrapFn(fn));
+    public final <D> Fn.Arg<Snapshot<D>> xOn(Event event, final Fn.Arg<XSnapshot> fn) {
+        return on(event.name(), this.<D>wrapFn(fn));
     }
 
     @JsOverlay
     public final void xOnce(final Event event, Fn.Arg<XSnapshot> sucess, Fn.Arg<Error> error) {
         once(event.name(), wrapFn(sucess), error);
+    }
+
+    @JsOverlay
+    public final Promise<XSnapshot, Error> xOnce(final Event event) {
+        return once(event.name()).then(new Fn.ArgRet<Snapshot<Object>, XSnapshot>() {
+            @Override
+            public XSnapshot e(Snapshot<Object> snapshot) {
+                return new XSnapshot(snapshot);
+            }
+        }, new Fn.ArgRet<Error, Error>() {
+            @Override
+            public Error e(Error error) {
+                return error;
+            }
+        });
     }
 
     @JsOverlay
