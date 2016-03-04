@@ -3,7 +3,6 @@ package com.github.spirylics.xgwt.firebase;
 import com.github.spirylics.xgwt.essential.Fn;
 import com.github.spirylics.xgwt.essential.XMapper;
 import com.google.common.base.Joiner;
-import com.google.gwt.core.client.JavaScriptObject;
 import jsinterop.annotations.JsConstructor;
 import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsPackage;
@@ -112,12 +111,12 @@ public class Firebase {
 
     @JsOverlay
     public final <D> Promise<Void, Error> xPush(D data) {
-        return push(xMapper.convert(data, JavaScriptObject.class));
+        return push(xMapper.jsConvert(data));
     }
 
     @JsOverlay
     public final <D> Promise<Void, Error> xSet(D data) {
-        return set(xMapper.convert(data, JavaScriptObject.class));
+        return set(xMapper.jsConvert(data));
     }
 
 
@@ -128,7 +127,7 @@ public class Firebase {
 
     @JsOverlay
     public final Firebase xChild(String... paths) {
-        return child(Joiner.on("/").join(paths));
+        return child(Joiner.on("/").join(paths)).setAuth(getAuth());
     }
 
     @JsOverlay

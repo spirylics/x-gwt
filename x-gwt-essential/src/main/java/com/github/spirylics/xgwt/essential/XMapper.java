@@ -54,7 +54,7 @@ public class XMapper {
     public <V> String write(V value) {
         if (value == null) {
             return null;
-        } else if (value instanceof String || value instanceof Number || value instanceof Boolean) {
+        } else if (isPrimitive(value)) {
             return String.valueOf(value);
         } else {
             return getMapper(value).write(value);
@@ -103,6 +103,18 @@ public class XMapper {
             }
         }
         throw new UnsupportedOperationException("Conversion not supported: object=" + String.valueOf(object) + ",clazz=" + String.valueOf(clazz));
+    }
+
+    public <V> V jsConvert(Object object) {
+        if (isPrimitive(object)) {
+            return (V) object;
+        } else {
+            return (V) convert(object, JavaScriptObject.class);
+        }
+    }
+
+    public boolean isPrimitive(Object o) {
+        return o instanceof String || o instanceof Number || o instanceof Boolean;
     }
 
     public <V extends JsonBuilder> V convert(JavaScriptObject jso, Class<V> clazz) {
