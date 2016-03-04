@@ -11,5 +11,7 @@ public interface Promise<S, E> {
 
     Promise then(Fn.NoArg success, Fn.Arg<E> error);
 
+    <R> Promise then(Fn.ArgRet<S, R> success);
+
     <R> Promise then(Fn.ArgRet<S, R> success, Fn.ArgRet<E, E> error);
 }

@@ -14,4 +14,6 @@ public interface Snapshot<V> {
 
     <X> boolean forEach(Fn.Arg<Snapshot<X>> fn);
 
+    Firebase ref();
+
 }

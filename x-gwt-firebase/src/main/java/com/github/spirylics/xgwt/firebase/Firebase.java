@@ -107,11 +107,6 @@ public class Firebase {
             public XSnapshot e(Snapshot<Object> snapshot) {
                 return new XSnapshot(snapshot);
             }
-        }, new Fn.ArgRet<Error, Error>() {
-            @Override
-            public Error e(Error error) {
-                return error;
-            }
         });
     }
 

@@ -21,6 +21,10 @@ public class XSnapshot {
         return snapshot.exists();
     }
 
+    public Firebase ref() {
+        return snapshot.ref();
+    }
+
     public <V> V val(Class<V> clazz) {
         return xMapper.convert(snapshot.val(), clazz);
     }
