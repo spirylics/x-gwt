@@ -53,7 +53,7 @@ public class Firebase {
 
     public native void off(String event);
 
-    public native <D> void off(String event, Fn.Arg<Snapshot<D>> fn);
+    public native void off(String event, Fn.Arg<?> fn);
 
     public native void onAuth(Fn.Arg<Auth> fn);
 
@@ -107,6 +107,16 @@ public class Firebase {
                 return new XSnapshot(snapshot);
             }
         });
+    }
+
+    @JsOverlay
+    public final void xOff(final Event event) {
+        off(event.name());
+    }
+
+    @JsOverlay
+    public final void xOff(final Event event, Fn.Arg<?> fn) {
+        off(event.name(), fn);
     }
 
     @JsOverlay

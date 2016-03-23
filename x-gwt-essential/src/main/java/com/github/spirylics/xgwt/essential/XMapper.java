@@ -101,6 +101,8 @@ public class XMapper {
             } else {
                 return read(JsonUtils.stringify(jso), clazz);
             }
+        } else if (clazz.equals(JavaScriptObject.class) && mappers.containsKey(object.getClass())) {
+            return (V) JsonUtils.safeEval(write(object));
         }
         throw new UnsupportedOperationException("Conversion not supported: object=" + String.valueOf(object) + ",clazz=" + String.valueOf(clazz));
     }
