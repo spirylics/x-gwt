@@ -3,4 +3,5 @@
     <inherits name='com.github.spirylics.xgwt.essential'/>
     <inherits name='com.github.spirylics.xgwt.firebase'/>
     <inherits name='com.github.spirylics.xgwt.cordova'/>
+    <inherits name='com.github.spirylics.xgwt.analytics'/>
 </module>

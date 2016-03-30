@@ -20,10 +20,6 @@ public class XLogger implements GWT.UncaughtExceptionHandler {
     String version;
     String model;
 
-    public XLogger() {
-        this(System.getProperty("xgwt.logging.package"));
-    }
-
     public XLogger(String loggingPackage) {
         this(Logger.getLogger(loggingPackage));
     }

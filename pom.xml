@@ -72,6 +72,7 @@
         <module>x-gwt-essential</module>
         <module>x-gwt-firebase</module>
         <module>x-gwt-cordova</module>
+        <module>x-gwt-analytics</module>
         <module>x-gwt-server</module>
         <module>x-gwt-all</module>
     </modules>

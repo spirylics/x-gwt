@@ -5,6 +5,7 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.js.JsUtils;
 import com.google.gwt.query.client.plugins.deferred.PromiseFunction;
+import com.google.gwt.user.client.Window;
 import com.googlecode.gwtphonegap.client.*;
 import com.googlecode.gwtphonegap.client.device.Device;
 import com.googlecode.gwtphonegap.client.geolocation.GeolocationCallback;
@@ -108,4 +109,16 @@ public class XCordova {
         phoneGap.getGeolocation().getCurrentPosition(callback, geolocationOptions);
         return this;
     }
+
+    public boolean isNative() {
+        return phoneGap.isPhoneGapDevice();
+    }
+
+    public boolean isDesktop() {
+        return !Window.Navigator.getUserAgent().matches(".*(iPhone|iPod|iPad|Android|BlackBerry|IEMobile).*");
+    }
+
+    public native boolean isTactile()  /*-{
+        return !!('ontouchstart' in $wnd) || !!('onmsgesturechange' in $wnd);
+    }-*/;
 }

@@ -7,7 +7,7 @@
     <inherits name='com.github.nmorel.gwtjackson.GwtJackson'/>
     <define-property name="gwt.logging.xRemoteHandler" values="ENABLED, DISABLED"/>
     <replace-with class="com.google.gwt.logging.client.NullLogHandler">
-        <when-type-is class="com.github.spirylics.xgwt.essential.XLoggerRemoteHandler"/>
+        <when-type-is class="com.github.spirylics.com.github.spirylics.xgwt.essential.XLoggerRemoteHandler"/>
         <any>
             <when-property-is name="gwt.logging.enabled" value="FALSE"/>
             <when-property-is name="gwt.logging.xRemoteHandler" value="DISABLED"/>
@@ -20,9 +20,6 @@
     <set-property name="gwt.logging.systemHandler" value="DISABLED"/>
     <set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED"/>
     <set-property name="gwt.logging.xRemoteHandler" value="DISABLED"/>
-
-    <define-configuration-property name="xgwt.logging.package" is-multi-valued="false"/>
-    <set-configuration-property name="xgwt.logging.package" value=""/>
 
     <source path='essential'/>
 </module>
