@@ -87,8 +87,8 @@
                     <providerImplementations>
                         <git>jgit</git>
                     </providerImplementations>
-                    <username>${scm.xgwt.username}</username>
-                    <password>${scm.xgwt.password}</password>
+                    <username>${scm.github.username}</username>
+                    <password>${scm.github.password}</password>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>
