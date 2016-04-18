@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.spirylics.xgwt</groupId>
     <artifactId>x-gwt-essential</artifactId>
     <packaging>jar</packaging>
-    <version>1.6-SNAPSHOT</version>
     <name>${project.artifactId}</name>
 
     <parent>
@@ -15,41 +15,29 @@
     </parent>
 
     <dependencies>
-        <!-- PROVIDED -->
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>${version.gwt}</version>
-            <scope>provided</scope>
         </dependency>
-        <!-- COMPILE -->
         <dependency>
             <groupId>com.github.nmorel.gwtjackson</groupId>
             <artifactId>gwt-jackson</artifactId>
-            <version>0.11.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava-gwt</artifactId>
-            <version>${version.guava}</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.gwtquery</groupId>
             <artifactId>gwtquery</artifactId>
-            <version>1.5-SNAPSHOT</version>
         </dependency>
-        <!-- TEST -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${version.junit}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.gwt.gwtmockito</groupId>
             <artifactId>gwtmockito</artifactId>
-            <version>1.1.6</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -58,14 +46,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${version.gwt}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>resources</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

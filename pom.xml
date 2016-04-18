@@ -24,7 +24,7 @@
         <version.jukito>1.4.1</version.jukito>
         <version.junit>4.12</version.junit>
         <version.servlet-api>4.0.0-b01</version.servlet-api>
-        
+
         <gwt.skip>false</gwt.skip>
         <war.skip>false</war.skip>
         <scm.xgwt.username/>
@@ -72,13 +72,118 @@
         <module>x-gwt-essential</module>
         <module>x-gwt-firebase</module>
         <module>x-gwt-cordova</module>
+        <module>x-gwt-polymer</module>
         <module>x-gwt-analytics</module>
         <module>x-gwt-server</module>
         <module>x-gwt-all</module>
     </modules>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- PROVIDED -->
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-user</artifactId>
+                <version>${version.gwt}</version>
+            </dependency>
+            <!-- COMPILE -->
+            <dependency>
+                <groupId>com.github.spirylics.xgwt</groupId>
+                <artifactId>x-gwt-essential</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.spirylics.xgwt</groupId>
+                <artifactId>x-gwt-cordova</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.spirylics.xgwt</groupId>
+                <artifactId>x-gwt-firebase</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.spirylics.xgwt</groupId>
+                <artifactId>x-gwt-analytics</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.spirylics.xgwt</groupId>
+                <artifactId>x-gwt-polymer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.arcbees.analytics</groupId>
+                <artifactId>universal-analytics</artifactId>
+                <version>2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.gwtplatform</groupId>
+                <artifactId>gwtp-mvp-client</artifactId>
+                <version>1.5.3</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.nmorel.gwtjackson</groupId>
+                <artifactId>gwt-jackson</artifactId>
+                <version>0.12.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava-gwt</artifactId>
+                <version>${version.guava}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.gwtquery</groupId>
+                <artifactId>gwtquery</artifactId>
+                <version>1.5-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-servlet</artifactId>
+                <version>${version.gwt}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${version.servlet-api}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.gwtphonegap</groupId>
+                <artifactId>gwtphonegap</artifactId>
+                <version>3.5.0.1</version>
+            </dependency>
+            <!-- TEST -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt.gwtmockito</groupId>
+                <artifactId>gwtmockito</artifactId>
+                <version>1.1.6</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>display-dependency-updates</goal>
+                            <goal>display-plugin-updates</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -103,6 +208,22 @@
                 </dependencies>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>gwt-maven-plugin</artifactId>
+                    <version>${version.gwt}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>resources</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <prerequisites>

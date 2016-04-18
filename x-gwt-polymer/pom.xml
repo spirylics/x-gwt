@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.spirylics.xgwt</groupId>
-    <artifactId>x-gwt-analytics</artifactId>
+    <artifactId>x-gwt-polymer</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
 
@@ -23,18 +23,6 @@
             <groupId>com.github.spirylics.xgwt</groupId>
             <artifactId>x-gwt-essential</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.github.spirylics.xgwt</groupId>
-            <artifactId>x-gwt-cordova</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.arcbees.analytics</groupId>
-            <artifactId>universal-analytics</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.gwtplatform</groupId>
-            <artifactId>gwtp-mvp-client</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
@@ -42,14 +30,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${version.gwt}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>resources</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

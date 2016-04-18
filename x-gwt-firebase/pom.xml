@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.spirylics.xgwt</groupId>
@@ -15,17 +16,13 @@
     </parent>
 
     <dependencies>
-        <!-- PROVIDED -->
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>${version.gwt}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.spirylics.xgwt</groupId>
             <artifactId>x-gwt-essential</artifactId>
-            <version>1.6-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -34,14 +31,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${version.gwt}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>resources</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

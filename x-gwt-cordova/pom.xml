@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.spirylics.xgwt</groupId>
     <artifactId>x-gwt-cordova</artifactId>
     <packaging>jar</packaging>
-    <version>1.6-SNAPSHOT</version>
     <name>${project.artifactId}</name>
 
     <parent>
@@ -15,23 +15,17 @@
     </parent>
 
     <dependencies>
-        <!-- PROVIDED -->
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>${version.gwt}</version>
-            <scope>provided</scope>
         </dependency>
-        <!-- COMPILE -->
         <dependency>
             <groupId>com.googlecode.gwtphonegap</groupId>
             <artifactId>gwtphonegap</artifactId>
-            <version>3.5.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.github.spirylics.xgwt</groupId>
             <artifactId>x-gwt-essential</artifactId>
-            <version>1.6-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
