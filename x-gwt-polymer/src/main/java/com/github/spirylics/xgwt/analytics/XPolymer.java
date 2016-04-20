@@ -18,6 +18,17 @@ import static com.google.gwt.query.client.GQuery.body;
 
 public class XPolymer {
 
+    public static Promise promiseAttached(final UIObject uiObject) {
+        final Promise.Deferred deferred = GQuery.Deferred();
+        extendAttached(uiObject, new Function() {
+            @Override
+            public void f() {
+                deferred.resolve();
+            }
+        });
+        return deferred.promise();
+    }
+
     public static void extendAttached(final UIObject uiObject, final Function fn) {
         extendAttached(uiObject.getElement(), JsUtils.wrapFunction(fn));
     }
