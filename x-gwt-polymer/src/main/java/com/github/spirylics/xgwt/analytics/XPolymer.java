@@ -19,8 +19,31 @@ import static com.google.gwt.query.client.GQuery.body;
 public class XPolymer {
 
     public static Promise promiseAttached(final UIObject uiObject) {
-        final Promise.Deferred deferred = GQuery.Deferred();
-        extendAttached(uiObject, new Function() {
+        return promise(uiObject.getElement(), "attached");
+    }
+
+    public static void extendAttached(final Element element, final Function fn) {
+        extendAttached(element, JsUtils.wrapFunction(fn));
+    }
+
+    public static void extendAttached(final Element element, final JavaScriptObject fn) {
+        extend(element, "attached", fn);
+    }
+
+    public static Lifecycle lifecycle(final UIObject uiObject) {
+        return new Lifecycle(uiObject.getElement());
+    }
+
+    public static Lifecycle lifecycle(final Element element) {
+        return new Lifecycle(element);
+    }
+
+    public static Promise promise(final Element element, final String functionName) {
+        return promise(element, functionName, GQuery.Deferred());
+    }
+
+    public static Promise promise(final Element element, final String functionName, final Promise.Deferred deferred) {
+        extend(element, functionName, new Function() {
             @Override
             public void f() {
                 deferred.resolve();
@@ -29,18 +52,14 @@ public class XPolymer {
         return deferred.promise();
     }
 
-    public static void extendAttached(final UIObject uiObject, final Function fn) {
-        extendAttached(uiObject.getElement(), JsUtils.wrapFunction(fn));
+    public static void extend(final Element element, final String functionName, final Function fn) {
+        extend(element, functionName, JsUtils.wrapFunction(fn));
     }
 
-    public static void extendAttached(final Element element, final Function fn) {
-        extendAttached(element, JsUtils.wrapFunction(fn));
-    }
-
-    public static native void extendAttached(final Element element, final JavaScriptObject fn) /*-{
+    public static native void extend(final Element element, final String functionName, final JavaScriptObject fn) /*-{
         $wnd.Polymer.dom.flush();
-        var wrap = element.attached;
-        element.attached = function (fn, wrap) {
+        var wrap = element[functionName];
+        element[functionName] = function (fn, wrap) {
             return function () {
                 if (wrap != null) {
                     wrap.apply(this, arguments);
