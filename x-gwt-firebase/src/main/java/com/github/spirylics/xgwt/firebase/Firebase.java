@@ -43,6 +43,8 @@ public class Firebase {
 
     public native Promise<Auth, Error> createUser(Credentials credentials);
 
+    public native String key();
+
     public native <D> Fn.Arg<Snapshot<D>> on(String event, Fn.Arg<Snapshot<D>> fn);
 
     public native <D> void once(String event, Fn.Arg<Snapshot<D>> succes, Fn.Arg<Error> error);

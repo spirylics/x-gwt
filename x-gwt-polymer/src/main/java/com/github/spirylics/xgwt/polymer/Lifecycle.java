@@ -1,4 +1,4 @@
-package com.github.spirylics.xgwt.analytics;
+package com.github.spirylics.xgwt.polymer;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;

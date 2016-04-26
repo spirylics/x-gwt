@@ -1,4 +1,4 @@
-package com.github.spirylics.xgwt.analytics;
+package com.github.spirylics.xgwt.polymer;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.JavaScriptObject;
