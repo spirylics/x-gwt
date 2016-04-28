@@ -80,13 +80,13 @@ public class XLogger implements GWT.UncaughtExceptionHandler {
     }
 
     private void log(Level level, String format, Throwable t, Object... args) {
-        if (logger.isLoggable(level)) {
+        if (logger.isLoggable(level) && ok()) {
             logger.log(level, formatMessage(format, args), t);
         }
     }
 
     private void log(Level level, String format, Object... args) {
-        if (logger.isLoggable(level)) {
+        if (logger.isLoggable(level) && ok()) {
             logger.log(level, formatMessage(format, args));
         }
     }
@@ -127,4 +127,8 @@ public class XLogger implements GWT.UncaughtExceptionHandler {
     public void onUncaughtException(Throwable e) {
         severe("Uncaught exception", e);
     }
+
+    private native boolean ok() /*-{
+        return window != null;
+    }-*/;
 }

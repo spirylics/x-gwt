@@ -1,9 +1,12 @@
 package com.github.spirylics.xgwt.polymer;
 
+import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
+
+import java.util.Map;
 
 public class Lifecycle {
 
@@ -32,6 +35,7 @@ public class Lifecycle {
 
     final Element element;
     State state;
+    final Map<State, Promise> statePromiseMap = Maps.newHashMap();
 
     public Lifecycle(final Element element) {
         this.element = element;
@@ -39,13 +43,11 @@ public class Lifecycle {
     }
 
     public final Promise promise(State state) {
-        Promise.Deferred deferred = GQuery.Deferred();
         if (state.isResolvedWith(this.state)) {
-            deferred.resolve();
+            return GQuery.Deferred().resolve().promise();
         } else {
-            XPolymer.promise(this.element, state.name(), deferred);
+            return statePromiseMap.get(state);
         }
-        return deferred.promise();
     }
 
     private void life(final State... states) {
@@ -55,11 +57,11 @@ public class Lifecycle {
     }
 
     private void life(final State state) {
-        XPolymer.promise(this.element, state.name()).done(new Function() {
+        statePromiseMap.put(state, XPolymer.promise(this.element, state.name()).then(new Function() {
             @Override
             public void f() {
                 Lifecycle.this.state = state;
             }
-        });
+        }));
     }
 }

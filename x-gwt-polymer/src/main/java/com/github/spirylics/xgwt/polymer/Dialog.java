@@ -1,66 +1,106 @@
 package com.github.spirylics.xgwt.polymer;
 
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.common.base.Strings;
+import com.google.gwt.event.logical.shared.*;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.js.JsUtils;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
+import java.util.logging.Logger;
+
 import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.body;
 
-public class Dialog extends HTMLPanel {
+public class Dialog extends HTMLPanel implements HasOpenHandlers<Dialog>, HasCloseHandlers<Dialog> {
 
     static Dialog main;
 
-    public Dialog() {
+    final String dialogParameter;
+    HandlerRegistration onceCloseRegistration;
+    HandlerRegistration onceOpenRegistration;
+    public final Lifecycle lifecycle;
+
+    public Dialog(final String historyToken) {
         super("paper-dialog", "<h2 class=\"dialog-header\"></h2>" +
                 "<paper-dialog-scrollable class=\"dialog-content\"></paper-dialog-scrollable>" +
                 "<div class=\"buttons\">" +
                 "<paper-button dialog-dismiss>OK</paper-button>" +
                 "<paper-button dialog-confirm autofocus>OK</paper-button>" +
                 "</div>");
+        this.lifecycle = new Lifecycle(getElement());
         $(this)
                 .attr("entry-animation", "scale-up-animation")
                 .attr("exit-animation", "fade-out-animation")
                 .attr("with-backdrop", "");
+        if (historyToken == null) {
+            dialogParameter = null;
+        } else {
+            dialogParameter = ";dialog=" + historyToken;
+            History.addValueChangeHandler(new ValueChangeHandler<String>() {
+                @Override
+                public void onValueChange(ValueChangeEvent<String> event) {
+                    Logger.getLogger("").severe(event.getValue());
+                    if (hasHistoryDialogParameter(event.getValue())) {
+                        uiOpen().done(new Function() {
+                            @Override
+                            public void f() {
+                                OpenEvent.fire(Dialog.this, Dialog.this);
+                            }
+                        });
+                    } else {
+                        uiClose().done(new Function() {
+                            @Override
+                            public void f() {
+                                CloseEvent.fire(Dialog.this, Dialog.this);
+                            }
+                        });
+                    }
+                }
+            });
+            onUiOpen(new Function() {
+                @Override
+                public void f() {
+                    addDialogParameter();
+                }
+            });
+            onUiClose(new Function() {
+                @Override
+                public void f() {
+                    removeDialogParameter();
+                }
+            });
+        }
     }
 
-    public Dialog(final String historyToken) {
-        this();
-        final String dialogParameter = ";dialog=" + historyToken;
-        History.addValueChangeHandler(new ValueChangeHandler<String>() {
-            @Override
-            public void onValueChange(ValueChangeEvent<String> event) {
-                if (!event.getValue().contains(dialogParameter)) {
-                    close();
-                } else {
-                    open();
-                }
-            }
-        });
-        onOpen(new Function() {
-            @Override
-            public void f() {
-                if (!History.getToken().contains(dialogParameter)) {
-                    History.newItem(History.getToken() + dialogParameter, false);
-                }
-            }
-        }).onClose(new Function() {
-            @Override
-            public void f() {
-                if (History.getToken().contains(dialogParameter)) {
-                    History.back();
-                }
-            }
-        });
+    private final boolean hasDialogParameter() {
+        return !Strings.isNullOrEmpty(dialogParameter);
+    }
+
+    private final boolean hasHistoryDialogParameter(String historyToken) {
+        return hasDialogParameter() && Strings.nullToEmpty(historyToken).contains(dialogParameter);
+    }
+
+    private final Dialog addDialogParameter() {
+        if (!hasHistoryDialogParameter(History.getToken())) {
+            History.newItem(History.getToken() + dialogParameter, true);
+        }
+        return this;
+    }
+
+    private final Dialog removeDialogParameter() {
+        if (hasHistoryDialogParameter(History.getToken())) {
+            History.back();
+        }
+        return this;
     }
 
     public static Dialog main() {
         if (main == null) {
-            main = new Dialog("dialog_main");
+            main = new Dialog("main");
             $(body).append(main.getElement());
         }
         return main;
@@ -87,48 +127,96 @@ public class Dialog extends HTMLPanel {
     }
 
     public Dialog open() {
-        JsUtils.jsni(getElement(), "open");
+        if (hasDialogParameter()) {
+            uiOpen();
+        } else {
+            addDialogParameter();
+        }
         return this;
     }
 
     public Dialog close() {
-        JsUtils.jsni(getElement(), "close");
+        if (hasDialogParameter()) {
+            removeDialogParameter();
+        } else {
+            uiClose();
+        }
         return this;
     }
 
-    public Dialog onceOpen(final Function function) {
-        return onOpen(new Function() {
+    public boolean isOpened() {
+        return JsUtils.prop(getElement(), "opened");
+    }
+
+    public ClosingReason getClosingReason() {
+        return JsUtils.prop(getElement(), "closingReason");
+    }
+
+    Promise uiOpen() {
+        final Promise.Deferred deferred = GQuery.Deferred();
+        if (isOpened()) {
+            deferred.resolve();
+        } else {
+            onceUiOpen(new Function() {
+                @Override
+                public void f() {
+                    deferred.resolve();
+                }
+            });
+            JsUtils.jsni(getElement(), "open");
+        }
+        return deferred.promise();
+    }
+
+    Promise uiClose() {
+        final Promise.Deferred deferred = GQuery.Deferred();
+        if (isOpened()) {
+            onceUiClose(new Function() {
+                @Override
+                public void f() {
+                    deferred.resolve();
+                }
+            });
+            JsUtils.jsni(getElement(), "close");
+        } else {
+            deferred.resolve();
+        }
+        return deferred.promise();
+    }
+
+    public Dialog onceUiOpen(final Function function) {
+        return onUiOpen(new Function() {
             @Override
             public void f() {
                 function.f(getEvent(), getArguments());
-                offOpen(this);
+                offUiOpen(this);
             }
         });
     }
 
-    public Dialog onceClose(final Function function) {
-        return onClose(new Function() {
+    public Dialog onceUiClose(final Function function) {
+        return onUiClose(new Function() {
             @Override
             public void f() {
                 function.f(getEvent(), getArguments());
-                offClose(this);
+                offUiClose(this);
             }
         });
     }
 
-    public Dialog onOpen(Function function) {
+    public Dialog onUiOpen(Function function) {
         return on("iron-overlay-opened", function);
     }
 
-    public Dialog onClose(Function function) {
+    public Dialog onUiClose(Function function) {
         return on("iron-overlay-closed", function);
     }
 
-    public Dialog offOpen(Function function) {
+    public Dialog offUiOpen(Function function) {
         return off("iron-overlay-opened", function);
     }
 
-    public Dialog offClose(Function function) {
+    public Dialog offUiClose(Function function) {
         return off("iron-overlay-closed", function);
     }
 
@@ -142,4 +230,35 @@ public class Dialog extends HTMLPanel {
         return this;
     }
 
+    @Override
+    public HandlerRegistration addOpenHandler(OpenHandler<Dialog> handler) {
+        return addHandler(handler, OpenEvent.getType());
+    }
+
+    @Override
+    public HandlerRegistration addCloseHandler(CloseHandler<Dialog> handler) {
+        return addHandler(handler, CloseEvent.getType());
+    }
+
+    public Dialog onceOpenHandler(final OpenHandler<Dialog> handler) {
+        this.onceOpenRegistration = addHandler(new OpenHandler<Dialog>() {
+            @Override
+            public void onOpen(OpenEvent<Dialog> event) {
+                handler.onOpen(event);
+                onceOpenRegistration.removeHandler();
+            }
+        }, OpenEvent.getType());
+        return this;
+    }
+
+    public Dialog onceCloseHandler(final CloseHandler<Dialog> handler) {
+        this.onceCloseRegistration = addHandler(new CloseHandler() {
+            @Override
+            public void onClose(CloseEvent event) {
+                handler.onClose(event);
+                onceCloseRegistration.removeHandler();
+            }
+        }, CloseEvent.getType());
+        return this;
+    }
 }
