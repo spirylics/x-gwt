@@ -1,8 +1,11 @@
 package com.github.spirylics.xgwt.polymer;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.js.JsUtils;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
 import static com.google.gwt.query.client.GQuery.$;
@@ -25,13 +28,42 @@ public class Dialog extends HTMLPanel {
                 .attr("with-backdrop", "");
     }
 
+    public Dialog(final String historyToken) {
+        this();
+        final String dialogParameter = ";dialog=" + historyToken;
+        History.addValueChangeHandler(new ValueChangeHandler<String>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<String> event) {
+                if (!event.getValue().contains(dialogParameter)) {
+                    close();
+                } else {
+                    open();
+                }
+            }
+        });
+        onOpen(new Function() {
+            @Override
+            public void f() {
+                if (!History.getToken().contains(dialogParameter)) {
+                    History.newItem(History.getToken() + dialogParameter, false);
+                }
+            }
+        }).onClose(new Function() {
+            @Override
+            public void f() {
+                if (History.getToken().contains(dialogParameter)) {
+                    History.back();
+                }
+            }
+        });
+    }
+
     public static Dialog main() {
         if (main == null) {
-            main = new Dialog();
+            main = new Dialog("dialog_main");
             $(body).append(main.getElement());
         }
-        $(main).off();
-        return main.close();
+        return main;
     }
 
     public Dialog setHeader(String html) {
