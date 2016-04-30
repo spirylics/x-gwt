@@ -55,7 +55,7 @@ public class Lifecycle {
     }
 
     private void life(final State state) {
-        XPolymer.promise(this.element, state.name()).done(new Function() {
+        XPolymer.extend(this.element, state.name(), new Function() {
             @Override
             public void f() {
                 Lifecycle.this.state = state;
