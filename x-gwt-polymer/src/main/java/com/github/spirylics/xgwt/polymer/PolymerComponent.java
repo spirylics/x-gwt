@@ -120,8 +120,8 @@ public class PolymerComponent extends HTMLPanel {
                 @Override
                 public void f() {
                     if (isPropertyEquals(key, value)) {
-                        deferred.resolve(value);
                         offPropertyChange(key, this);
+                        deferred.resolve(value);
                     }
                 }
             });
