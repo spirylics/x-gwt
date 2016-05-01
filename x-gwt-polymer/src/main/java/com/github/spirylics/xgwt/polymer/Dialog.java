@@ -7,10 +7,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
-import com.google.gwt.query.client.js.JsUtils;
 import com.google.gwt.user.client.History;
-
-import java.util.logging.Logger;
 
 public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>, HasCloseHandlers<Dialog> {
     String dialogParameter;
@@ -24,10 +21,9 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
 
     public Dialog(String html) {
         super("paper-dialog", html);
-        gQuery
-                .attr("entry-animation", "scale-up-animation")
-                .attr("exit-animation", "fade-out-animation")
-                .attr("with-backdrop", "");
+        setAttribute("entry-animation", "scale-up-animation");
+        setAttribute("exit-animation", "fade-out-animation");
+        setAttribute("with-backdrop", "");
     }
 
     void enableHistory() {
@@ -35,11 +31,9 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
             this.historyHandlerRegistration = History.addValueChangeHandler(new ValueChangeHandler<String>() {
                 @Override
                 public void onValueChange(final ValueChangeEvent<String> event) {
-                    Logger.getLogger("").severe("onValueChange: " + event.getValue());
                     overlay(hasHistoryDialogParameter(event.getValue())).done(new Function() {
                         @Override
                         public void f() {
-                            Logger.getLogger("").severe("overlay: " + isOpened());
                             if (isOpened()) {
                                 OpenEvent.fire(Dialog.this, Dialog.this);
                             } else {
@@ -78,7 +72,7 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
     }
 
     public void setHistoryToken(String historyToken) {
-        this.dialogParameter = ";dialog=" + historyToken;
+        this.dialogParameter = "dialog=" + historyToken;
     }
 
     public Dialog open() {
@@ -101,11 +95,11 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
     }
 
     public boolean isOpened() {
-        return gQuery.prop("opened");
+        return get("opened");
     }
 
     public ClosingReason getClosingReason() {
-        return JsUtils.prop(getElement(), "closingReason");
+        return get("closingReason");
     }
 
     String getDialogParameter() {
@@ -124,7 +118,9 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
             @Override
             public void execute() {
                 if (!hasHistoryDialogParameter(History.getToken())) {
-                    History.newItem(History.getToken() + getDialogParameter(), true);
+                    History.newItem(History.getToken()
+                            + (Strings.isNullOrEmpty(History.getToken()) ? "#" : ";")
+                            + getDialogParameter(), true);
                 }
             }
         });
@@ -153,7 +149,7 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
                     deferred.resolve(opened);
                 }
             });
-            gQuery.prop("opened", opened);
+            set("opened", opened);
         }
         return deferred.promise();
     }

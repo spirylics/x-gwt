@@ -1,5 +1,6 @@
 package com.github.spirylics.xgwt.polymer;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
@@ -18,28 +19,60 @@ public class PolymerComponent extends HTMLPanel {
         this.gQuery = $(this);
     }
 
-    public <T> T invoke(String method, Object... args) {
+    public <T> T call(String method, Object... args) {
         return JsUtils.jsni(getElement(), method, args);
     }
 
-    public Promise invoke(Lifecycle.State state, final String method, final Object... args) {
+    public Promise call(Lifecycle.State state, final String method, final Object... args) {
         return lifecycle.promise(state).then(new Function() {
             @Override
             public Object f(Object... arguments) {
-                return invoke(method, args);
+                return call(method, args);
             }
         });
     }
 
-    public void off(String event, Function function) {
+    public Promise callWhenAttached(String method, Object... args) {
+        return call(Lifecycle.State.attached, method, args);
+    }
+
+    public String getAttribute(String key) {
+        return gQuery.attr(key);
+    }
+
+    public <P extends PolymerComponent> P setAttribute(String key, Object value) {
+        gQuery.attr(key, value);
+        return (P) this;
+    }
+
+    public <T> T get(String key) {
+        return gQuery.prop(key);
+    }
+
+    public <T, P extends PolymerComponent> P set(String key, T value) {
+        gQuery.prop(key, value);
+        return (P) this;
+    }
+
+    public GQuery find(String selector) {
+        return gQuery.find(selector);
+    }
+
+    public Element findElement(String selector) {
+        return find(selector).get(0);
+    }
+
+    public <P extends PolymerComponent> P off(String event, Function function) {
         gQuery.off(event, function);
+        return (P) this;
     }
 
-    public void on(String event, Function function) {
+    public <P extends PolymerComponent> P on(String event, Function function) {
         gQuery.on(event, function);
+        return (P) this;
     }
 
-    public void once(final String event, final Function function) {
+    public <P extends PolymerComponent> P once(final String event, final Function function) {
         on(event, new Function() {
             @Override
             public void f() {
@@ -47,6 +80,7 @@ public class PolymerComponent extends HTMLPanel {
                 off(event, this);
             }
         });
+        return (P) this;
     }
 
     public void offPropertyChange(String key, Function function) {
@@ -73,7 +107,7 @@ public class PolymerComponent extends HTMLPanel {
     }
 
     public boolean isPropertyEquals(final String key, final Object value) {
-        Object property = gQuery.prop(key);
+        Object property = get(key);
         return property == value || (property != null && property.equals(value));
     }
 
