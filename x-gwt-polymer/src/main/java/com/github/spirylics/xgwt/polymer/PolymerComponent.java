@@ -49,6 +49,18 @@ public class PolymerComponent extends HTMLPanel {
         });
     }
 
+    public void offPropertyChange(String key, Function function) {
+        off(key + "-changed", function);
+    }
+
+    public void onPropertyChange(String key, Function function) {
+        on(key + "-changed", function);
+    }
+
+    public void oncePropertyChange(String key, Function function) {
+        once(key + "-changed", function);
+    }
+
     public Promise whenEvent(final String event) {
         final Promise.Deferred deferred = GQuery.Deferred();
         once(event, new Function() {
@@ -57,6 +69,29 @@ public class PolymerComponent extends HTMLPanel {
                 deferred.resolve();
             }
         });
+        return deferred.promise();
+    }
+
+    public boolean isPropertyEquals(final String key, final Object value) {
+        Object property = gQuery.prop(key);
+        return property == value || (property != null && property.equals(value));
+    }
+
+    public Promise whenProperty(final String key, final Object value) {
+        final Promise.Deferred deferred = GQuery.Deferred();
+        if (isPropertyEquals(key, value)) {
+            deferred.resolve(value);
+        } else {
+            onPropertyChange(key, new Function() {
+                @Override
+                public void f() {
+                    if (isPropertyEquals(key, value)) {
+                        deferred.resolve(value);
+                        offPropertyChange(key, this);
+                    }
+                }
+            });
+        }
         return deferred.promise();
     }
 }

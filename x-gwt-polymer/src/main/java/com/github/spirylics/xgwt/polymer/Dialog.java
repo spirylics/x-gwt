@@ -5,12 +5,17 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.js.JsUtils;
 import com.google.gwt.user.client.History;
 
+import java.util.logging.Logger;
+
 public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>, HasCloseHandlers<Dialog> {
     String dialogParameter;
+    HandlerRegistration historyHandlerRegistration;
+    Function onOpened;
 
     public interface Events {
         String OVERLAY_OPENED = "iron-overlay-opened";
@@ -23,38 +28,53 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
                 .attr("entry-animation", "scale-up-animation")
                 .attr("exit-animation", "fade-out-animation")
                 .attr("with-backdrop", "");
-        History.addValueChangeHandler(new ValueChangeHandler<String>() {
-            @Override
-            public void onValueChange(ValueChangeEvent<String> event) {
-                if (hasHistoryDialogParameter(event.getValue())) {
-                    openOverlay().done(new Function() {
+    }
+
+    void enableHistory() {
+        if (this.historyHandlerRegistration == null) {
+            this.historyHandlerRegistration = History.addValueChangeHandler(new ValueChangeHandler<String>() {
+                @Override
+                public void onValueChange(final ValueChangeEvent<String> event) {
+                    Logger.getLogger("").severe("onValueChange: " + event.getValue());
+                    overlay(hasHistoryDialogParameter(event.getValue())).done(new Function() {
                         @Override
                         public void f() {
-                            OpenEvent.fire(Dialog.this, Dialog.this);
-                        }
-                    });
-                } else {
-                    closeOverlay().done(new Function() {
-                        @Override
-                        public void f() {
-                            CloseEvent.fire(Dialog.this, Dialog.this);
+                            Logger.getLogger("").severe("overlay: " + isOpened());
+                            if (isOpened()) {
+                                OpenEvent.fire(Dialog.this, Dialog.this);
+                            } else {
+                                disableHistory();
+                                CloseEvent.fire(Dialog.this, Dialog.this);
+                            }
                         }
                     });
                 }
-            }
-        });
-        on(Events.OVERLAY_OPENED, new Function() {
-            @Override
-            public void f() {
-                addDialogParameter();
-            }
-        });
-        on(Events.OVERLAY_CLOSED, new Function() {
-            @Override
-            public void f() {
-                removeDialogParameter();
-            }
-        });
+            });
+        }
+        if (this.onOpened == null) {
+            this.onOpened = new Function() {
+                @Override
+                public void f() {
+                    if (isOpened()) {
+                        addDialogParameter();
+                    } else {
+                        removeDialogParameter();
+                    }
+                }
+            };
+            onPropertyChange("opened", this.onOpened);
+        }
+    }
+
+    void disableHistory() {
+        if (this.historyHandlerRegistration != null) {
+            this.historyHandlerRegistration.removeHandler();
+            this.historyHandlerRegistration = null;
+        }
+        if (this.onOpened != null) {
+            offPropertyChange("opened", this.onOpened);
+            this.onOpened = null;
+        }
     }
 
     public void setHistoryToken(String historyToken) {
@@ -62,8 +82,9 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
     }
 
     public Dialog open() {
+        enableHistory();
         if (hasHistoryDialogParameter(History.getToken())) {
-            openOverlay();
+            overlay(true);
         } else {
             addDialogParameter();
         }
@@ -74,7 +95,7 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
         if (hasHistoryDialogParameter(History.getToken())) {
             removeDialogParameter();
         } else {
-            closeOverlay();
+            overlay(false);
         }
         return this;
     }
@@ -121,20 +142,21 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
         });
     }
 
-    Promise openOverlay() {
-        return overlay("open", Events.OVERLAY_OPENED);
+    Promise overlay(final boolean opened) {
+        final Promise.Deferred deferred = GQuery.Deferred();
+        if (isOpened() == opened) {
+            deferred.resolve(opened);
+        } else {
+            once(opened ? Events.OVERLAY_OPENED : Events.OVERLAY_CLOSED, new Function() {
+                @Override
+                public void f() {
+                    deferred.resolve(opened);
+                }
+            });
+            gQuery.prop("opened", opened);
+        }
+        return deferred.promise();
     }
-
-    Promise closeOverlay() {
-        return overlay("close", Events.OVERLAY_CLOSED);
-    }
-
-    Promise overlay(String action, String event) {
-        Promise promise = whenEvent(event);
-        invoke(Lifecycle.State.attached, action);
-        return promise;
-    }
-
 
     @Override
     public HandlerRegistration addOpenHandler(OpenHandler<Dialog> handler) {
