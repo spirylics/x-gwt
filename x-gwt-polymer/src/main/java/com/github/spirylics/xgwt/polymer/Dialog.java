@@ -8,8 +8,21 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
 import com.google.gwt.user.client.History;
+import jsinterop.annotations.JsProperty;
+import jsinterop.annotations.JsType;
 
 public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>, HasCloseHandlers<Dialog> {
+    @SuppressWarnings("ALL")
+    @JsType(isNative = true)
+    public interface ClosingReason {
+        @JsProperty
+        public boolean isCanceled();
+
+        @JsProperty
+        public boolean isConfirmed();
+
+    }
+
     String dialogParameter;
     HandlerRegistration historyHandlerRegistration;
     Function onOpened;
