@@ -63,6 +63,8 @@ public class Firebase {
 
     public native <D> Promise<Void, Error> push(D data);
 
+    public native Promise<Void, Error> remove();
+
     public native <D> Promise<Void, Error> set(D data);
 
     @JsOverlay
