@@ -59,6 +59,8 @@ public class Firebase {
 
     public native void onAuth(Fn.Arg<Auth> fn);
 
+    public native void offAuth(Fn.Arg<Auth> fn);
+
     public native Firebase push();
 
     public native <D> Promise<Void, Error> push(D data);
@@ -66,6 +68,19 @@ public class Firebase {
     public native Promise<Void, Error> remove();
 
     public native <D> Promise<Void, Error> set(D data);
+
+    @Override
+    public native String toString();
+
+    @JsOverlay
+    public final AuthRegistration handleAuth(Event event, final Fn.Arg<Auth> fn) {
+        return new AuthRegistration(this, fn);
+    }
+
+    @JsOverlay
+    public final EventRegistration handleEvent(Event event, final Fn.Arg<XSnapshot> fn) {
+        return new EventRegistration(this, event, fn);
+    }
 
     @JsOverlay
     public final boolean isAuth() {
@@ -94,8 +109,8 @@ public class Firebase {
     }
 
     @JsOverlay
-    public final <D> Fn.Arg<Snapshot<D>> xOn(Event event, final Fn.Arg<XSnapshot> fn) {
-        return on(event.name(), this.<D>wrapFn(fn));
+    public final EventRegistration xOn(Event event, final Fn.Arg<XSnapshot> fn) {
+        return new EventRegistration(this, event, fn).on();
     }
 
     @JsOverlay
