@@ -7,20 +7,23 @@ import java.util.Set;
 
 public class XGWT {
 
-    final static Set<GWT.UncaughtExceptionHandler> UNCAUGHT_EXCEPTION_HANDLERS = Sets.newHashSet();
+    private static Set<GWT.UncaughtExceptionHandler> UNCAUGHT_EXCEPTION_HANDLERS;
 
-    static {
-        GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
-            @Override
-            public void onUncaughtException(Throwable throwable) {
-                for (GWT.UncaughtExceptionHandler handler : UNCAUGHT_EXCEPTION_HANDLERS) {
-                    handler.onUncaughtException(throwable);
-                }
-            }
-        });
+    private XGWT() {
     }
 
     public static void addUncaughtExceptionHandler(GWT.UncaughtExceptionHandler handler) {
+        if (UNCAUGHT_EXCEPTION_HANDLERS == null) {
+            UNCAUGHT_EXCEPTION_HANDLERS = Sets.newHashSet();
+            GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
+                @Override
+                public void onUncaughtException(Throwable throwable) {
+                    for (GWT.UncaughtExceptionHandler handler : UNCAUGHT_EXCEPTION_HANDLERS) {
+                        handler.onUncaughtException(throwable);
+                    }
+                }
+            });
+        }
         UNCAUGHT_EXCEPTION_HANDLERS.add(handler);
     }
 }
