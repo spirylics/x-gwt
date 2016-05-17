@@ -69,6 +69,8 @@ public class Firebase {
 
     public native <D> Promise<Void, Error> set(D data);
 
+    public native void unauth();
+
     @Override
     public native String toString();
 
