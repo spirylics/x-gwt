@@ -9,7 +9,7 @@ import jsinterop.annotations.JsPackage;
 import jsinterop.annotations.JsType;
 
 @SuppressWarnings("ALL")
-@JsType(isNative = true, namespace = JsPackage.GLOBAL)
+@JsType(isNative = true, namespace = "")
 public class Firebase {
 
     private static XMapper xMapper;
