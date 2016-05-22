@@ -35,4 +35,8 @@ public class XDataSnapshot {
             }
         });
     }
+
+    public boolean hasChild(String path) {
+        return dataSnapshot.hasChild(path);
+    }
 }

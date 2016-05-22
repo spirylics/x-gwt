@@ -21,4 +21,6 @@ public interface DataSnapshot<V> {
     @JsProperty
     Reference getRef();
 
+    boolean hasChild(String path);
+
 }
