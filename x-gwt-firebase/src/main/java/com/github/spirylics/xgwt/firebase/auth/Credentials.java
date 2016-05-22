@@ -1,4 +1,4 @@
-package com.github.spirylics.xgwt.firebase;
+package com.github.spirylics.xgwt.firebase.auth;
 
 import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsProperty;

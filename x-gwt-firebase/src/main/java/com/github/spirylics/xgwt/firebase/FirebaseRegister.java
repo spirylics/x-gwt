@@ -1,6 +1,12 @@
 package com.github.spirylics.xgwt.firebase;
 
 import com.github.spirylics.xgwt.essential.Fn;
+import com.github.spirylics.xgwt.firebase.auth.Auth;
+import com.github.spirylics.xgwt.firebase.auth.AuthRegistration;
+import com.github.spirylics.xgwt.firebase.auth.User;
+import com.github.spirylics.xgwt.firebase.database.EventRegistration;
+import com.github.spirylics.xgwt.firebase.database.Reference;
+import com.github.spirylics.xgwt.firebase.database.XDataSnapshot;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -12,18 +18,13 @@ import java.util.Set;
 public class FirebaseRegister {
 
     private final Map<HandlerRegistration, Boolean> handlerRegistrations = Maps.newHashMap();
-    private final Firebase firebase;
 
-    public FirebaseRegister(Firebase firebase) {
-        this.firebase = firebase;
+    public HandlerRegistration add(Reference reference, Event event, Fn.Arg<XDataSnapshot> fn, boolean auth, boolean on) {
+        return add(new EventRegistration(reference, event, fn), auth, on);
     }
 
-    public HandlerRegistration add(Firebase firebase, Event event, Fn.Arg<XSnapshot> fn, boolean auth, boolean on) {
-        return add(new EventRegistration(firebase, event, fn), auth, on);
-    }
-
-    public HandlerRegistration addAuth(Fn.Arg<Auth> fn, boolean on) {
-        return add(new AuthRegistration(firebase, fn), false, on);
+    public HandlerRegistration addAuth(Auth auth, Fn.Arg<User> fn, boolean on) {
+        return add(new AuthRegistration(auth, fn), false, on);
     }
 
     public HandlerRegistration add(HandlerRegistration handlerRegistration, boolean auth, boolean on) {

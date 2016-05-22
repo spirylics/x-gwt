@@ -15,6 +15,11 @@ import java.util.Collection;
 import java.util.Map;
 
 public class XMapper {
+    private static XMapper INSTANCE;
+
+    public static XMapper get() {
+        return INSTANCE;
+    }
 
     final Map<Class<?>, ObjectMapper<?>> mappers;
     final Map<Class<?>, Function<String, ?>> readers;
@@ -48,6 +53,7 @@ public class XMapper {
                     }
                 })
                 .build();
+        INSTANCE = this;
     }
 
 
