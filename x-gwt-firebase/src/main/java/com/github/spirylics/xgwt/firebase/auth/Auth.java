@@ -27,6 +27,11 @@ public class Auth {
     public native Fn.NoArg onAuthStateChanged(Fn.Arg<User> fn);
 
     @JsOverlay
+    public final boolean isAuth() {
+        return getCurrentUser() != null;
+    }
+
+    @JsOverlay
     public final AuthRegistration handleAuth(Event event, final Fn.Arg<User> fn) {
         return new AuthRegistration(this, fn);
     }

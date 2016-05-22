@@ -49,6 +49,13 @@ public class FirebaseRegister {
         }
     }
 
+    public void removeRegistration(HandlerRegistration handlerRegistration) {
+        if (handlerRegistration != null) {
+            handlerRegistration.off();
+            handlerRegistrations.remove(handlerRegistration);
+        }
+    }
+
     public void removeFirebaseAuthEvents() {
         Set<HandlerRegistration> authHandlerRegistrations = Maps
                 .filterValues(handlerRegistrations, new Predicate<Boolean>() {
@@ -58,8 +65,7 @@ public class FirebaseRegister {
                     }
                 }).keySet();
         for (HandlerRegistration authHandlerRegistration : Sets.newHashSet(authHandlerRegistrations)) {
-            authHandlerRegistration.off();
-            handlerRegistrations.remove(authHandlerRegistration);
+            removeRegistration(authHandlerRegistration);
         }
     }
 }
