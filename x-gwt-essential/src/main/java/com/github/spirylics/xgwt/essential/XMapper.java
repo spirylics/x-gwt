@@ -3,6 +3,7 @@ package com.github.spirylics.xgwt.essential;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.json.client.JSONObject;
@@ -15,7 +16,7 @@ import java.util.Collection;
 import java.util.Map;
 
 public class XMapper {
-    private static XMapper INSTANCE;
+    private final static XMapper INSTANCE = new XMapper();
 
     public static XMapper get() {
         return INSTANCE;
@@ -24,8 +25,12 @@ public class XMapper {
     final Map<Class<?>, ObjectMapper<?>> mappers;
     final Map<Class<?>, Function<String, ?>> readers;
 
-    public XMapper(Map<Class<?>, ObjectMapper<?>> mappers) {
-        this.mappers = mappers;
+    public static void addMappers(Map<Class<?>, ObjectMapper<?>> mappers) {
+        INSTANCE.mappers.putAll(mappers);
+    }
+
+    private XMapper() {
+        this.mappers = Maps.newHashMap();
         this.readers = new ImmutableMap.Builder<Class<?>, Function<String, ?>>()
                 .put(String.class, new Function<String, String>() {
                     public String apply(String input) {
@@ -53,7 +58,6 @@ public class XMapper {
                     }
                 })
                 .build();
-        INSTANCE = this;
     }
 
 
