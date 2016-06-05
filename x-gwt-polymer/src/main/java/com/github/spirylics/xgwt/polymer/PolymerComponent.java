@@ -11,12 +11,12 @@ import static com.google.gwt.query.client.GQuery.$;
 
 public class PolymerComponent extends HTMLPanel {
     public final Lifecycle lifecycle;
-    public final GQuery gQuery;
+    public final GQuery $;
 
     public PolymerComponent(String tag, String html) {
         super(tag, html);
         this.lifecycle = XPolymer.lifecycle(getElement());
-        this.gQuery = $(this);
+        this.$ = $(this);
     }
 
     public <T> T call(String method, Object... args) {
@@ -37,25 +37,25 @@ public class PolymerComponent extends HTMLPanel {
     }
 
     public String getAttribute(String key) {
-        return gQuery.attr(key);
+        return $.attr(key);
     }
 
     public <P extends PolymerComponent> P setAttribute(String key, Object value) {
-        gQuery.attr(key, value);
+        $.attr(key, value);
         return (P) this;
     }
 
     public <T> T get(String key) {
-        return gQuery.prop(key);
+        return $.prop(key);
     }
 
     public <T, P extends PolymerComponent> P set(String key, T value) {
-        gQuery.prop(key, value);
+        $.prop(key, value);
         return (P) this;
     }
 
     public GQuery find(String selector) {
-        return gQuery.find(selector);
+        return $.find(selector);
     }
 
     public Element findElement(String selector) {
@@ -63,12 +63,12 @@ public class PolymerComponent extends HTMLPanel {
     }
 
     public <P extends PolymerComponent> P off(String event, Function function) {
-        gQuery.off(event, function);
+        $.off(event, function);
         return (P) this;
     }
 
     public <P extends PolymerComponent> P on(String event, Function function) {
-        gQuery.on(event, function);
+        $.on(event, function);
         return (P) this;
     }
 
