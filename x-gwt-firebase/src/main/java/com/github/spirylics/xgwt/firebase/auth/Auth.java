@@ -19,6 +19,8 @@ public class Auth {
 
     public native Promise<User, Error> signInAnonymously();
 
+    public native Promise<Void, Error> signOut();
+
     public native Promise<User, Error> createUserWithEmailAndPassword(String email, String password);
 
     @JsProperty
