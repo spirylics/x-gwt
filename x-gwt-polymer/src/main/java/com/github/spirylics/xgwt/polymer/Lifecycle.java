@@ -31,7 +31,7 @@ public class Lifecycle {
     }
 
     final Element element;
-    State state;
+    public State state;
 
     public Lifecycle(final Element element) {
         this.element = element;
