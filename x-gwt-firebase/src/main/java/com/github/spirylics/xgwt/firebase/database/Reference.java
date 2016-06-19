@@ -3,9 +3,11 @@ package com.github.spirylics.xgwt.firebase.database;
 import com.github.spirylics.xgwt.essential.Fn;
 import com.github.spirylics.xgwt.essential.XMapper;
 import com.github.spirylics.xgwt.firebase.Error;
-import com.github.spirylics.xgwt.firebase.*;
+import com.github.spirylics.xgwt.firebase.Event;
+import com.github.spirylics.xgwt.firebase.Promise;
 import com.google.common.base.Joiner;
 import jsinterop.annotations.JsOverlay;
+import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
 @SuppressWarnings("ALL")
@@ -14,7 +16,8 @@ public class Reference {
 
     public native Reference child(String path);
 
-    public native String key();
+    @JsProperty
+    public native String getKey();
 
     public native <D> Fn.Arg<DataSnapshot<D>> on(String event, Fn.Arg<DataSnapshot<D>> fn);
 

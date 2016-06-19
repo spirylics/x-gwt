@@ -1,7 +1,6 @@
 package com.github.spirylics.xgwt.firebase.database;
 
 import com.github.spirylics.xgwt.essential.Fn;
-import com.github.spirylics.xgwt.firebase.Firebase;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
