@@ -14,7 +14,6 @@ import com.google.gwt.query.client.js.JsObjectArray;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class XMapper {
     private final static XMapper INSTANCE = new XMapper();
@@ -23,7 +22,7 @@ public class XMapper {
         return INSTANCE;
     }
 
-    final public Map<Class<?>, ObjectMapper<?>> mappers;
+    final Map<Class<?>, ObjectMapper<?>> mappers;
     final Map<Class<?>, Function<String, ?>> readers;
 
     public static void addMappers(Map<Class<?>, ObjectMapper<?>> mappers) {
@@ -78,7 +77,6 @@ public class XMapper {
         } else if (readers.containsKey(clazz)) {
             return (V) readers.get(clazz).apply(input);
         } else {
-            Logger.getLogger("").severe("read : " + mappers.keySet());
             return getMapper(clazz).read(input);
         }
     }
