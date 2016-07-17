@@ -34,7 +34,7 @@ public class Auth {
     }
 
     @JsOverlay
-    public final AuthRegistration handleAuth(Event event, final Fn.Arg<User> fn) {
+    public final AuthRegistration handleAuth(final Fn.Arg<User> fn) {
         return new AuthRegistration(this, fn);
     }
 }
