@@ -37,6 +37,10 @@ public class FirebaseRegister {
         return handlerRegistration;
     }
 
+    public HandlerRegistration add(Reference reference, Event event, Fn.Arg<XDataSnapshot> fn) {
+        return add(new EventRegistration(reference, event, fn), true, true);
+    }
+
     public void enableFirebaseEvents() {
         for (HandlerRegistration handlerRegistration : Sets.newHashSet(handlerRegistrations.keySet())) {
             handlerRegistration.on();
@@ -65,6 +69,12 @@ public class FirebaseRegister {
                     }
                 }).keySet();
         for (HandlerRegistration authHandlerRegistration : Sets.newHashSet(authHandlerRegistrations)) {
+            removeRegistration(authHandlerRegistration);
+        }
+    }
+
+    public void removeAllRegistrations() {
+        for (HandlerRegistration authHandlerRegistration : Sets.newHashSet(handlerRegistrations.keySet())) {
             removeRegistration(authHandlerRegistration);
         }
     }
