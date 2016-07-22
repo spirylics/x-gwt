@@ -5,10 +5,12 @@ import jsinterop.annotations.JsType;
 
 @SuppressWarnings("ALL")
 @JsType(isNative = true, namespace = "firebase", name = "User")
-public interface User {
+public class User extends UserInfo {
+    
     @JsProperty
-    String getUid();
+    public native boolean getEmailVerified();
 
     @JsProperty
-    String getProvider();
+    public native boolean getIsAnonymous();
+
 }
