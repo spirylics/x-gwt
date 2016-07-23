@@ -25,4 +25,9 @@ public abstract class Fn {
     public interface Args {
         void e(Object... args);
     }
+
+    @JsFunction
+    public interface Resolver<S, E> {
+        void e(Fn.Arg<S> resolve, Fn.Arg<E> reject);
+    }
 }
