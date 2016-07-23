@@ -19,7 +19,7 @@ public class Auth {
 
     public native Promise<Void, Error> confirmPasswordReset(String code, String newPassword);
 
-    public native Promise<AuthResult, Error> signInWithPopup(AuthProvider authProvider);
+    public native Promise<UserCredential, Error> signInWithPopup(AuthProvider authProvider);
 
     public native Promise<User, Error> signInWithEmailAndPassword(String email, String password);
 
