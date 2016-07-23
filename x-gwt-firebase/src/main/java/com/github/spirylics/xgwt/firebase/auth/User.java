@@ -13,4 +13,7 @@ public class User extends UserInfo {
     @JsProperty
     public native boolean getIsAnonymous();
 
+    @JsProperty
+    public native UserInfo[] getProviderData();
+
 }
