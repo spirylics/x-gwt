@@ -44,6 +44,14 @@ public class PolymerComponent extends HTMLPanel {
         return (P) this;
     }
 
+    public void setAttributes(String attributes) {
+        String[] attributeArray = attributes.split(" ");
+        for (String attribute : attributeArray) {
+            String[] a = attribute.split(":");
+            setAttribute(a[0], a[1]);
+        }
+    }
+
     public <T> T get(String key) {
         return w.get(key);
     }
