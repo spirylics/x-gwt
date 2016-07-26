@@ -66,6 +66,8 @@ public class XMapper {
             return null;
         } else if (isPrimitive(value)) {
             return String.valueOf(value);
+        } else if (value.getClass().isEnum()) {
+            return value.toString();
         } else {
             return getMapper(value).write(value);
         }
@@ -120,6 +122,8 @@ public class XMapper {
     public <V> V jsConvert(Object object) {
         if (isPrimitive(object)) {
             return (V) object;
+        } else if (object.getClass().isEnum()) {
+            return (V) object.toString();
         } else {
             return (V) convert(object, JavaScriptObject.class);
         }
