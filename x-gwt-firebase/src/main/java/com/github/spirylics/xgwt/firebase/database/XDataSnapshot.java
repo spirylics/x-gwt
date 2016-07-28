@@ -39,4 +39,8 @@ public class XDataSnapshot {
     public boolean hasChild(String path) {
         return dataSnapshot.hasChild(path);
     }
+
+    public int numChildren() {
+        return dataSnapshot.numChildren();
+    }
 }

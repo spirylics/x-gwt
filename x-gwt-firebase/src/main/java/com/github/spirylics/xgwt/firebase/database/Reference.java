@@ -16,6 +16,10 @@ public class Reference {
 
     public native Reference child(String path);
 
+    public native Reference equalTo(String value);
+
+    public native Reference equalTo(String value, String key);
+
     @JsProperty
     public native String getKey();
 
@@ -30,6 +34,8 @@ public class Reference {
     public native void off(String event);
 
     public native void off(String event, Fn.Arg<?> fn);
+
+    public native Reference orderByChild(String path);
 
     public native Reference push();
 

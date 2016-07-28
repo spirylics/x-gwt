@@ -22,4 +22,6 @@ public interface DataSnapshot<V> {
 
     boolean hasChild(String path);
 
+    int numChildren();
+
 }
