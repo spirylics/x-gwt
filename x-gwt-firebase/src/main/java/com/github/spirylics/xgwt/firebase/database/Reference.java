@@ -37,6 +37,12 @@ public class Reference {
 
     public native Reference orderByChild(String path);
 
+    public native Reference orderByKey();
+
+    public native Reference orderByPriority();
+
+    public native Reference orderByValue();
+
     public native Reference push();
 
     public native <D> Promise<Void, Error> push(D data);
