@@ -41,6 +41,10 @@ public class FirebaseRegister {
         return add(new EventRegistration(reference, event, fn), true, true);
     }
 
+    public HandlerRegistration addOff(Reference reference, Event event, Fn.Arg<XDataSnapshot> fn) {
+        return add(new EventRegistration(reference, event, fn), true, false);
+    }
+
     public void enableFirebaseEvents() {
         for (HandlerRegistration handlerRegistration : Sets.newHashSet(handlerRegistrations.keySet())) {
             handlerRegistration.on();
