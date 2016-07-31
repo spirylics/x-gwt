@@ -11,6 +11,10 @@ public class XDataSnapshot {
         this.dataSnapshot = dataSnapshot;
     }
 
+    public XDataSnapshot child(String path) {
+        return new XDataSnapshot(dataSnapshot.child(path));
+    }
+
     public String getKey() {
         return dataSnapshot.getKey();
     }

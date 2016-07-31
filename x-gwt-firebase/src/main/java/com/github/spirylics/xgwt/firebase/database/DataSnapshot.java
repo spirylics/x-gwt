@@ -8,6 +8,8 @@ import jsinterop.annotations.JsType;
 @JsType(isNative = true, namespace = "firebase.database", name = "DataSnapshot")
 public interface DataSnapshot<V> {
 
+    <C> DataSnapshot<C> child(String path);
+
     boolean exists();
 
     @JsProperty
