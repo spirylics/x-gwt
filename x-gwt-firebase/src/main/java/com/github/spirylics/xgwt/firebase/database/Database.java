@@ -4,7 +4,10 @@ import jsinterop.annotations.JsType;
 
 @SuppressWarnings("ALL")
 @JsType(isNative = true, namespace = "firebase.database", name = "Database")
-public class Database {
+public interface Database {
 
-    public native Reference ref();
+    Reference ref();
+
+    Reference ref(String path);
+
 }
