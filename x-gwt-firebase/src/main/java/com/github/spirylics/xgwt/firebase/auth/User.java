@@ -27,4 +27,22 @@ public class User extends UserInfo {
         }
     }
 
+    @JsOverlay
+    public final String xGetProviderId() {
+        if (Strings.isNullOrEmpty(getProviderId()) && getProviderData().length > 0) {
+            return getProviderData()[0].getProviderId();
+        } else {
+            return getProviderId();
+        }
+    }
+
+    @JsOverlay
+    public final String xGetPhotoURL() {
+        if (Strings.isNullOrEmpty(getPhotoURL()) && getProviderData().length > 0) {
+            return getProviderData()[0].getPhotoURL();
+        } else {
+            return getPhotoURL();
+        }
+    }
+
 }
