@@ -4,7 +4,9 @@ package com.github.spirylics.xgwt.firebase.utils;
 public enum ScopeEnum {
 
     EMAIL("email"),
-    PROFILE("profile");
+    GOOGLE_PROFILE("profile"),
+    FACEBOOK_PROFILE("public_profile");
+
 
     private String scope;
 
