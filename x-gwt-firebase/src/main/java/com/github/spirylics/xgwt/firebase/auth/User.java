@@ -28,6 +28,15 @@ public class User extends UserInfo {
     }
 
     @JsOverlay
+    public final String xGetDisplayName() {
+        if (Strings.isNullOrEmpty(getDisplayName()) && getProviderData().length > 0) {
+            return getProviderData()[0].getDisplayName();
+        } else {
+            return getDisplayName();
+        }
+    }
+
+    @JsOverlay
     public final String xGetProviderId() {
         if (Strings.isNullOrEmpty(getProviderId()) && getProviderData().length > 0) {
             return getProviderData()[0].getProviderId();
