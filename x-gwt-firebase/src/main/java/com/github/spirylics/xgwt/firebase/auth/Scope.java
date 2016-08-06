@@ -1,7 +1,7 @@
-package com.github.spirylics.xgwt.firebase.utils;
+package com.github.spirylics.xgwt.firebase.auth;
 
 
-public enum ScopeEnum {
+public enum Scope {
 
     EMAIL("email"),
     GOOGLE_PROFILE("profile"),
@@ -10,16 +10,12 @@ public enum ScopeEnum {
 
     private String scope;
 
-    ScopeEnum(String scope){
+    Scope(String scope) {
         this.scope = scope;
-        
+
     }
 
     public String getScope() {
         return scope;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
     }
 }

@@ -10,7 +10,4 @@ public class AuthProvider {
     @JsProperty
     public native String getProviderId();
 
-    @JsProperty
-    public native void setProviderId(String providerId);
-
 }
