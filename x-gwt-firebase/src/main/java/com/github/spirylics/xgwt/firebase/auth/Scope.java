@@ -1,21 +1,39 @@
 package com.github.spirylics.xgwt.firebase.auth;
 
 
-public enum Scope {
+import com.google.common.collect.ImmutableMap;
 
-    EMAIL("email"),
-    GOOGLE_PROFILE("profile"),
-    FACEBOOK_PROFILE("public_profile");
+import java.util.Map;
 
+public interface Scope {
 
-    private String scope;
+    Map<Generic, Facebook> GENERIC_FACEBOOK_SCOPE = new ImmutableMap.Builder<Scope.Generic, Scope.Facebook>()
+            .put(Scope.Generic.email, Scope.Facebook.email)
+            .put(Scope.Generic.profile, Scope.Facebook.public_profile)
+            .build();
 
-    Scope(String scope) {
-        this.scope = scope;
+    Map<Scope.Generic, Scope.Google> GENERIC_GOOGLE_SCOPE = new ImmutableMap.Builder<Scope.Generic, Scope.Google>()
+            .put(Scope.Generic.email, Scope.Google.email)
+            .put(Scope.Generic.profile, Scope.Google.profile)
+            .build();
 
+    enum Generic {
+        email, profile;
+
+        Facebook getFacebookScope() {
+            return GENERIC_FACEBOOK_SCOPE.get(this);
+        }
+
+        Google getGoogleScope() {
+            return GENERIC_GOOGLE_SCOPE.get(this);
+        }
     }
 
-    public String getScope() {
-        return scope;
+    enum Google {
+        email, profile;
+    }
+
+    enum Facebook {
+        email, public_profile;
     }
 }

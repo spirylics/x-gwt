@@ -8,12 +8,11 @@ import jsinterop.annotations.JsType;
 public class FacebookAuthProvider extends AuthProvider {
 
     @JsConstructor
-    public FacebookAuthProvider(){}
-
-    @JsMethod
-    public native void addScope(String scope);
+    public FacebookAuthProvider() {
+    }
 
     @JsMethod
     public native AuthCredential credential(String token);
+
 
 }

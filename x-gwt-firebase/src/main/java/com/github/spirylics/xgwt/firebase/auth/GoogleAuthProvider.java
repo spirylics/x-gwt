@@ -12,10 +12,6 @@ public class GoogleAuthProvider extends AuthProvider {
     }
 
     @JsMethod
-    public native void addScope(String scope);
-
-    @JsMethod
     public native AuthCredential credential(String idToken, String accessToken);
-
 
 }

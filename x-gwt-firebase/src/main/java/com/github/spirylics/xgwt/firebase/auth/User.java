@@ -20,7 +20,7 @@ public class User extends UserInfo {
 
     @JsOverlay
     public final String xGetEmail() {
-        if (Strings.isNullOrEmpty(getEmail()) && getProviderData().length > 0) {
+        if (isInProviderData(getEmail())) {
             return getProviderData()[0].getEmail();
         } else {
             return getEmail();
@@ -29,8 +29,8 @@ public class User extends UserInfo {
 
     @JsOverlay
     public final String xGetDisplayName() {
-        if (Strings.isNullOrEmpty(getDisplayName()) && getProviderData().length > 0) {
-            return getProviderData()[0].getDisplayName();
+        if (isInProviderData(getDisplayName())) {
+            return getFirstProviderData().getDisplayName();
         } else {
             return getDisplayName();
         }
@@ -38,8 +38,8 @@ public class User extends UserInfo {
 
     @JsOverlay
     public final String xGetProviderId() {
-        if (Strings.isNullOrEmpty(getProviderId()) && getProviderData().length > 0) {
-            return getProviderData()[0].getProviderId();
+        if (isInProviderData(getProviderId())) {
+            return getFirstProviderData().getProviderId();
         } else {
             return getProviderId();
         }
@@ -47,11 +47,21 @@ public class User extends UserInfo {
 
     @JsOverlay
     public final String xGetPhotoURL() {
-        if (Strings.isNullOrEmpty(getPhotoURL()) && getProviderData().length > 0) {
-            return getProviderData()[0].getPhotoURL();
+        if (isInProviderData(getPhotoURL())) {
+            return getFirstProviderData().getPhotoURL();
         } else {
             return getPhotoURL();
         }
+    }
+
+    @JsOverlay
+    final boolean isInProviderData(String value) {
+        return Strings.isNullOrEmpty(value) && getProviderData().length > 0;
+    }
+
+    @JsOverlay
+    final UserInfo getFirstProviderData() {
+        return getProviderData()[0];
     }
 
 }
