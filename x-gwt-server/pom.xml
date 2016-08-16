@@ -5,13 +5,13 @@
     <groupId>com.github.spirylics.xgwt</groupId>
     <artifactId>x-gwt-server</artifactId>
     <packaging>jar</packaging>
-    <version>1.6</version>
+    <version>1.7-SNAPSHOT</version>
     <name>${project.artifactId}</name>
 
     <parent>
         <groupId>com.github.spirylics.xgwt</groupId>
         <artifactId>x-gwt</artifactId>
-        <version>1.6</version>
+        <version>1.7-SNAPSHOT</version>
     </parent>
 
     <dependencies>
