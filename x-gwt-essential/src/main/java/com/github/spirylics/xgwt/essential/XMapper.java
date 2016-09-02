@@ -1,7 +1,6 @@
 package com.github.spirylics.xgwt.essential;
 
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -14,6 +13,7 @@ import com.google.gwt.query.client.js.JsObjectArray;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Function;
 
 public class XMapper {
     private final static XMapper INSTANCE = new XMapper();
@@ -47,10 +47,6 @@ public class XMapper {
                 }).put(Float.class, new Function<String, Float>() {
                     public Float apply(String input) {
                         return new Float(input);
-                    }
-                }).put(Double.class, new Function<String, Double>() {
-                    public Double apply(String input) {
-                        return new Double(input);
                     }
                 }).put(JSONObject.class, new Function<String, JSONObject>() {
                     public JSONObject apply(String input) {

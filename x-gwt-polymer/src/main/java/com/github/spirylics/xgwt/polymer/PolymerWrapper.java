@@ -7,25 +7,33 @@ import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.js.JsUtils;
 
-import static com.google.gwt.query.client.GQuery.$;
-
 public class PolymerWrapper {
-    public final Element el;
-    public final Lifecycle lifecycle;
-    public final GQuery $;
+    final Lifecycle lifecycle;
+    final GQuery $;
 
-    public PolymerWrapper(Element element) {
-        this.el = element;
-        this.lifecycle = XPolymer.lifecycle(element);
-        this.$ = $(el);
+    public PolymerWrapper(Object target) {
+        this.$ = com.google.gwt.query.client.GQuery.$(target);
+        this.lifecycle = XPolymer.lifecycle(el());
+    }
+
+    public GQuery $() {
+        return this.$;
+    }
+
+    public Element el() {
+        return $().get(0);
+    }
+
+    public Lifecycle lifecycle() {
+        return this.lifecycle;
     }
 
     public <T> T call(String method, Object... args) {
-        return JsUtils.jsni(this.el, method, args);
+        return JsUtils.jsni(el(), method, args);
     }
 
     public Promise call(Lifecycle.State state, final String method, final Object... args) {
-        return lifecycle.promise(state).then(new Function() {
+        return lifecycle().promise(state).then(new Function() {
             @Override
             public Object f(Object... arguments) {
                 return call(method, args);
@@ -41,18 +49,18 @@ public class PolymerWrapper {
         return $.attr(key);
     }
 
-    public <P extends PolymerWrapper> P setAttribute(String key, Object value) {
-        $.attr(key, value);
-        return (P) this;
+    public PolymerWrapper setAttribute(String key, Object value) {
+        $().attr(key, value);
+        return this;
     }
 
     public <T> T get(String key) {
         return $.prop(key);
     }
 
-    public <T, P extends PolymerWrapper> P set(String key, T value) {
-        $.prop(key, value);
-        return (P) this;
+    public <T> PolymerWrapper set(String key, T value) {
+        $().prop(key, value);
+        return this;
     }
 
     public GQuery find(String selector) {
@@ -63,17 +71,17 @@ public class PolymerWrapper {
         return find(selector).get(0);
     }
 
-    public <P extends PolymerWrapper> P off(String event, Function function) {
-        $.off(event, function);
-        return (P) this;
+    public PolymerWrapper off(String event, Function function) {
+        $().off(event, function);
+        return this;
     }
 
-    public <P extends PolymerWrapper> P on(String event, Function function) {
-        $.on(event, function);
-        return (P) this;
+    public PolymerWrapper on(String event, Function function) {
+        $().on(event, function);
+        return this;
     }
 
-    public <P extends PolymerWrapper> P once(final String event, final Function function) {
+    public PolymerWrapper once(final String event, final Function function) {
         on(event, new Function() {
             @Override
             public void f() {
@@ -81,29 +89,29 @@ public class PolymerWrapper {
                 off(event, this);
             }
         });
-        return (P) this;
+        return this;
     }
 
-    public <P extends PolymerWrapper> P appendTo(Node node) {
-        $.appendTo(node);
-        return (P) this;
+    public PolymerWrapper appendTo(Node node) {
+        $().appendTo(node);
+        return this;
     }
 
-    public <P extends PolymerWrapper> P appendTo(GQuery gQuery) {
-        $.appendTo(gQuery);
-        return (P) this;
+    public PolymerWrapper appendTo(GQuery gQuery) {
+        $().appendTo(gQuery);
+        return this;
     }
 
     public void offPropertyChange(String key, Function function) {
-        off(key + "-changed", function);
+        off(changedEvent(key), function);
     }
 
     public void onPropertyChange(String key, Function function) {
-        on(key + "-changed", function);
+        on(changedEvent(key), function);
     }
 
     public void oncePropertyChange(String key, Function function) {
-        once(key + "-changed", function);
+        once(changedEvent(key), function);
     }
 
     public Promise whenEvent(final String event) {
@@ -138,5 +146,9 @@ public class PolymerWrapper {
             });
         }
         return deferred.promise();
+    }
+
+    String changedEvent(String key) {
+        return key + "-changed";
     }
 }

@@ -11,7 +11,7 @@ import com.google.gwt.user.client.History;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
-public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>, HasCloseHandlers<Dialog> {
+public class Dialog extends PolymerWidget implements HasOpenHandlers<Dialog>, HasCloseHandlers<Dialog> {
     @SuppressWarnings("ALL")
     @JsType(isNative = true)
     public interface ClosingReason {
@@ -41,22 +41,17 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
 
     void enableHistory() {
         if (this.historyHandlerRegistration == null) {
-            this.historyHandlerRegistration = History.addValueChangeHandler(new ValueChangeHandler<String>() {
+            this.historyHandlerRegistration = History.addValueChangeHandler(event -> overlay(hasHistoryDialogParameter(event.getValue())).done(new Function() {
                 @Override
-                public void onValueChange(final ValueChangeEvent<String> event) {
-                    overlay(hasHistoryDialogParameter(event.getValue())).done(new Function() {
-                        @Override
-                        public void f() {
-                            if (isOpened()) {
-                                OpenEvent.fire(Dialog.this, Dialog.this);
-                            } else {
-                                disableHistory();
-                                CloseEvent.fire(Dialog.this, Dialog.this);
-                            }
-                        }
-                    });
+                public void f() {
+                    if (isOpened()) {
+                        OpenEvent.fire(Dialog.this, Dialog.this);
+                    } else {
+                        disableHistory();
+                        CloseEvent.fire(Dialog.this, Dialog.this);
+                    }
                 }
-            });
+            }));
         }
         if (this.onOpened == null) {
             this.onOpened = new Function() {
@@ -127,26 +122,20 @@ public class Dialog extends PolymerComponent implements HasOpenHandlers<Dialog>,
     }
 
     Dialog addDialogParameter() {
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                if (!hasHistoryDialogParameter(History.getToken())) {
-                    History.newItem(History.getToken()
-                            + (Strings.isNullOrEmpty(History.getToken()) ? "#" : ";")
-                            + getDialogParameter(), true);
-                }
+        Scheduler.get().scheduleDeferred(() -> {
+            if (!hasHistoryDialogParameter(History.getToken())) {
+                History.newItem(History.getToken()
+                        + (Strings.isNullOrEmpty(History.getToken()) ? "#" : ";")
+                        + getDialogParameter(), true);
             }
         });
         return this;
     }
 
     void removeDialogParameter() {
-        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-            @Override
-            public void execute() {
-                if (hasHistoryDialogParameter(History.getToken())) {
-                    History.back();
-                }
+        Scheduler.get().scheduleDeferred(() -> {
+            if (hasHistoryDialogParameter(History.getToken())) {
+                History.back();
             }
         });
     }

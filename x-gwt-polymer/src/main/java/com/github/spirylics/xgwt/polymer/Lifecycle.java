@@ -31,10 +31,13 @@ public class Lifecycle {
     }
 
     final Element element;
-    public State state;
+    private State state;
 
     public Lifecycle(final Element element) {
         this.element = element;
+        if (element.getPropertyBoolean("isAttached")) {
+            setState(State.attached);
+        }
         life(State.values());
     }
 
@@ -58,8 +61,16 @@ public class Lifecycle {
         XPolymer.extend(this.element, state.name(), new Function() {
             @Override
             public void f() {
-                Lifecycle.this.state = state;
+                setState(state);
             }
         });
+    }
+
+    public State getState() {
+        return this.state;
+    }
+
+    private void setState(State state) {
+        this.state = state;
     }
 }
