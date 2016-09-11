@@ -48,6 +48,11 @@
             <artifactId>x-gwt-polymer</artifactId>
             <version>1.7-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.spirylics.xgwt</groupId>
+            <artifactId>x-gwt-hello</artifactId>
+            <version>1.7-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

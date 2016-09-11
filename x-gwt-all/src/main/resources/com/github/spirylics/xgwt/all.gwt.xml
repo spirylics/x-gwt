@@ -5,4 +5,5 @@
     <inherits name='com.github.spirylics.xgwt.cordova'/>
     <inherits name='com.github.spirylics.xgwt.analytics'/>
     <inherits name='com.github.spirylics.xgwt.polymer'/>
+    <inherits name='com.github.spirylics.xgwt.hello'/>
 </module>

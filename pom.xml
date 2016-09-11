@@ -75,6 +75,7 @@
         <module>x-gwt-analytics</module>
         <module>x-gwt-server</module>
         <module>x-gwt-all</module>
+        <module>x-gwt-hello</module>
     </modules>
 
     <dependencyManagement>
