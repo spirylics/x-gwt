@@ -5,12 +5,12 @@ import jsinterop.annotations.JsType;
 
 @SuppressWarnings("ALL")
 @JsType(isNative = true, namespace = "firebase.auth", name = "AuthCredential")
-public interface AuthCredential {
+public class AuthCredential {
 
     @JsProperty
-    String getProvider();
+    public native String getProvider();
 
     @JsProperty
-    void setProvider(String provider);
+    public native void setProvider(String provider);
 
 }
