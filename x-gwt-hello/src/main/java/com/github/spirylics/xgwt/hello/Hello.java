@@ -1,6 +1,7 @@
 package com.github.spirylics.xgwt.hello;
 
 
+import com.github.spirylics.xgwt.essential.Promise;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsPackage;
 import jsinterop.annotations.JsType;
@@ -19,7 +20,7 @@ public class Hello {
 
     public native Hello init(Map<String, String> credential, Options options);
 
-    public native Promise<HelloAuth, Error> login();
+    public native Promise<Auth, Error> login();
 
     public native Credential getAuthResponse();
 

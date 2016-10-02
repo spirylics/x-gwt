@@ -1,6 +1,5 @@
-package com.github.spirylics.xgwt.hello;
+package com.github.spirylics.xgwt.essential;
 
-import com.github.spirylics.xgwt.essential.Fn;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsType;
 
@@ -17,6 +16,8 @@ public class Thenable<S, E> {
     public native <T extends Thenable> T then(Fn.NoArg onResolve);
 
     public native <R, T extends Thenable> T then(Fn.ArgRet<S, R> onResolve);
+
+    public native <R> Thenable then(Fn.ArgRet<S, R> onResolve, Fn.Arg<E> onReject);
 
     public native <R> Thenable then(Fn.ArgRet<S, R> onResolve, Fn.ArgRet<E, E> onReject);
 

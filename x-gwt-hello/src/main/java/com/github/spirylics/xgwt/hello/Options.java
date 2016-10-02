@@ -12,5 +12,5 @@ public class Options {
     public native String getDisplay();
 
     @JsProperty
-    public native void  setDisplay(String display);
+    public native void setDisplay(String display);
 }

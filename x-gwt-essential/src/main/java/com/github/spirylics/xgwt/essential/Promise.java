@@ -1,6 +1,5 @@
-package com.github.spirylics.xgwt.hello;
+package com.github.spirylics.xgwt.essential;
 
-import com.github.spirylics.xgwt.essential.Fn;
 import jsinterop.annotations.JsConstructor;
 import jsinterop.annotations.JsType;
 

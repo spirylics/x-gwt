@@ -1,15 +1,13 @@
-package com.github.spirylics.xgwt.hello;
+package com.github.spirylics.xgwt.essential;
 
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
 @JsType(isNative = true)
-public interface HelloAuth {
+public interface Error {
+    @JsProperty
+    String getCode();
 
     @JsProperty
-    String getNetwork();
-
-    @JsProperty
-    Credential getAuthResponse();
-
+    String getMessage();
 }

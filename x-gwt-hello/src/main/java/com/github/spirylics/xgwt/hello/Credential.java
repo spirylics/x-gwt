@@ -4,19 +4,18 @@ package com.github.spirylics.xgwt.hello;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
-@SuppressWarnings("ALL")
-@JsType(isNative = true, name = "Credential")
-public class Credential {
+@JsType(isNative = true)
+public interface Credential {
 
     @JsProperty
-    public native String getAccess_token();
+    String getAccess_token();
 
     @JsProperty
-    public native void  setAccess_token(String access_token);
+    void setAccess_token(String access_token);
 
     @JsProperty
-    public native String getExpires();
+    String getExpires();
 
     @JsProperty
-    public native void  setExpires(String expires);
+    void setExpires(String expires);
 }
