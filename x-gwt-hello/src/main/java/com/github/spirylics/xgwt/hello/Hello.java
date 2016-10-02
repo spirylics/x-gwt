@@ -5,7 +5,6 @@ import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsPackage;
 import jsinterop.annotations.JsType;
 
-import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("ALL")
@@ -18,9 +17,9 @@ public class Hello {
     @JsMethod(namespace = JsPackage.GLOBAL)
     public native static Hello hello(String network);
 
-    public native Hello init(Map<String,String> credential, Options options);
+    public native Hello init(Map<String, String> credential, Options options);
 
-    public native void login();
+    public native Promise<HelloAuth, Error> login();
 
     public native Credential getAuthResponse();
 
