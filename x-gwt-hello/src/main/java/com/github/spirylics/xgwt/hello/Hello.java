@@ -16,9 +16,13 @@ public class Hello {
     @JsMethod(namespace = JsPackage.GLOBAL)
     public native static Hello hello(String network);
 
+    public native Hello init(Credentials credentials);
+
     public native Hello init(Credentials credentials, Options options);
 
     public native Promise<Auth, Error> login();
+
+    public native Promise<Auth, Error> login(String network);
 
     public native Credential getAuthResponse();
 
