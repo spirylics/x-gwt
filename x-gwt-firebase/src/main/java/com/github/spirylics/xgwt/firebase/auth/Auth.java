@@ -1,9 +1,7 @@
 package com.github.spirylics.xgwt.firebase.auth;
 
 import com.github.spirylics.xgwt.essential.Fn;
-import com.github.spirylics.xgwt.firebase.Error;
-import com.github.spirylics.xgwt.firebase.Event;
-import com.github.spirylics.xgwt.firebase.Promise;
+import com.github.spirylics.xgwt.essential.Promise;
 import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
