@@ -22,7 +22,7 @@
         <version.bootstrap>0.9.2</version.bootstrap>
         <version.jukito>1.4.1</version.jukito>
         <version.junit>4.12</version.junit>
-        <version.servlet-api>4.0.0-b01</version.servlet-api>
+        <version.servlet-api>3.1.0</version.servlet-api>
 
         <gwt.skip>false</gwt.skip>
         <war.skip>false</war.skip>
