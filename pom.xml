@@ -17,7 +17,7 @@
 
         <version.guice>3.0</version.guice>
         <version.guava>20.0-rc1</version.guava>
-        <version.gwt>2.8.0-rc3</version.gwt>
+        <version.gwt>2.8.0</version.gwt>
         <version.gwtp>1.5.3</version.gwtp>
         <version.bootstrap>0.9.2</version.bootstrap>
         <version.jukito>1.4.1</version.jukito>
