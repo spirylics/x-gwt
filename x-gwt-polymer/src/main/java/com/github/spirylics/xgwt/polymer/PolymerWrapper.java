@@ -45,8 +45,18 @@ public class PolymerWrapper {
         return call(Lifecycle.State.attached, method, args);
     }
 
+    public PolymerWrapper addClass(String... classes) {
+        $().addClass(classes);
+        return this;
+    }
+
     public String getAttribute(String key) {
-        return $.attr(key);
+        return $().attr(key);
+    }
+
+    public PolymerWrapper removeAttribute(String key) {
+        $().removeAttr(key);
+        return this;
     }
 
     public PolymerWrapper setAttribute(String key, Object value) {

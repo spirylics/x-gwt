@@ -10,6 +10,10 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 public class PolymerWidget extends HTMLPanel {
     final PolymerWrapper w;
 
+    public PolymerWidget(String tag) {
+        this(tag, "");
+    }
+
     public PolymerWidget(String tag, String html) {
         super(tag, html);
         this.w = new PolymerWrapper(getElement());
@@ -41,6 +45,11 @@ public class PolymerWidget extends HTMLPanel {
 
     public String getAttribute(String key) {
         return w().getAttribute(key);
+    }
+
+    public <P extends PolymerWidget> P addClass(String... classes) {
+        w().addClass(classes);
+        return (P) this;
     }
 
     public <P extends PolymerWidget> P setAttribute(String key, Object value) {

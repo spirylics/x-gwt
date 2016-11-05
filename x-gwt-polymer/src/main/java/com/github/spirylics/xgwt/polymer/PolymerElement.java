@@ -10,7 +10,7 @@ import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
 @JsType(isNative = true)
-public interface PolymerElement {
+public interface PolymerElement extends Base {
 
     @JsProperty
     PolymerWrapper getPolymerWrapper();
@@ -59,6 +59,12 @@ public interface PolymerElement {
     @JsOverlay
     default String getAttribute(String key) {
         return w().getAttribute(key);
+    }
+
+    @JsOverlay
+    default PolymerElement removeAttribute(String key) {
+        w().removeAttribute(key);
+        return this;
     }
 
     @JsOverlay
