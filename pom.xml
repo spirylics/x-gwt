@@ -16,7 +16,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <version.guice>3.0</version.guice>
-        <version.guava>20.0-rc1</version.guava>
+        <version.guava>20.0</version.guava>
         <version.gwt>2.8.0</version.gwt>
         <version.gwtp>1.5.3</version.gwtp>
         <version.bootstrap>0.9.2</version.bootstrap>
@@ -125,7 +125,7 @@
             <dependency>
                 <groupId>com.github.nmorel.gwtjackson</groupId>
                 <artifactId>gwt-jackson</artifactId>
-                <version>0.13.0</version>
+                <version>0.14.1</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -135,7 +135,7 @@
             <dependency>
                 <groupId>com.googlecode.gwtquery</groupId>
                 <artifactId>gwtquery</artifactId>
-                <version>1.5-SNAPSHOT</version>
+                <version>1.5-beta1</version>
             </dependency>
             <dependency>
                 <groupId>com.google.gwt</groupId>

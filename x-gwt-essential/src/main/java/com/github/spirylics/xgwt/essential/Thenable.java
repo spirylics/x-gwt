@@ -1,10 +1,11 @@
 package com.github.spirylics.xgwt.essential;
 
 import jsinterop.annotations.JsMethod;
+import jsinterop.annotations.JsPackage;
 import jsinterop.annotations.JsType;
 
 @SuppressWarnings("ALL")
-@JsType(isNative = true)
+@JsType(isNative = true, namespace = JsPackage.GLOBAL)
 public class Thenable<S, E> {
 
     public native <T extends Thenable> T then(Fn.Arg<S> onResolve, Fn.Arg<E> onReject);
