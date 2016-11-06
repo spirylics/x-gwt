@@ -4,7 +4,6 @@ package com.github.spirylics.xgwt.polymer;
 import com.github.spirylics.xgwt.essential.Fn;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
-import jsinterop.annotations.JsPackage;
 import jsinterop.annotations.JsType;
 
 @JsType(isNative = true)

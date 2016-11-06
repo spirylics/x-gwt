@@ -18,7 +18,7 @@ public class XCordova {
     boolean networkIndicationShow;
 
     public XCordova() {
-        this((PhoneGap) GWT.create(PhoneGap.class));
+        this(GWT.create(PhoneGap.class));
     }
 
     public XCordova(PhoneGap phoneGap) {
@@ -119,6 +119,6 @@ public class XCordova {
     }
 
     public native boolean isTactile()  /*-{
-        return !!('ontouchstart' in $wnd) || !!('onmsgesturechange' in $wnd);
+        return !!('ontouchstart' in $wnd) || !!('ongesturechange' in $wnd);
     }-*/;
 }

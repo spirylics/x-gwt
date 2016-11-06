@@ -13,7 +13,7 @@ public class PolymerWrapper {
 
     public PolymerWrapper(Object target) {
         this.$ = com.google.gwt.query.client.GQuery.$(target);
-        this.lifecycle = XPolymer.lifecycle(el());
+        this.lifecycle = new Lifecycle(el());
     }
 
     public GQuery $() {
@@ -160,5 +160,23 @@ public class PolymerWrapper {
 
     String changedEvent(String key) {
         return key + "-changed";
+    }
+
+    public PolymerWrapper appendChild(PolymerElement element) {
+        Polymer.dom(this.el()).appendChild(element);
+        return this;
+    }
+
+    public PolymerWrapper appendChild(Element element) {
+        Polymer.dom(this.el()).appendChild(element);
+        return this;
+    }
+
+    public PolymerWrapper appendChild(PolymerWrapper polymerWrapper) {
+        return appendChild(polymerWrapper.el());
+    }
+
+    public PolymerWrapper appendChild(PolymerWidget polymerWidget) {
+        return appendChild(polymerWidget.w());
     }
 }
