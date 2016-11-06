@@ -9,6 +9,8 @@ public interface DomApi extends Dom {
 
     PolymerElement querySelector(String selector);
 
+    PolymerElement[] querySelectorAll(String selector);
+
     void appendChild(PolymerElement element);
 
     void appendChild(Element element);

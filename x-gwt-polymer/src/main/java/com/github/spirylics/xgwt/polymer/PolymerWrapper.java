@@ -162,13 +162,25 @@ public class PolymerWrapper {
         return key + "-changed";
     }
 
+    public DomApi domApi() {
+        return Polymer.dom(this.el());
+    }
+
+    public PolymerElement $$(String selector) {
+        return domApi().querySelector(selector);
+    }
+
+    public PolymerElement[] querySelectorAll(String selector) {
+        return domApi().querySelectorAll(selector);
+    }
+
     public PolymerWrapper appendChild(PolymerElement element) {
-        Polymer.dom(this.el()).appendChild(element);
+        domApi().appendChild(element);
         return this;
     }
 
     public PolymerWrapper appendChild(Element element) {
-        Polymer.dom(this.el()).appendChild(element);
+        domApi().appendChild(element);
         return this;
     }
 
