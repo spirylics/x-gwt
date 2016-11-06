@@ -15,4 +15,8 @@ public interface DomApi extends Dom {
 
     void appendChild(Element element);
 
+    void setAttribute(String attribute, Object value);
+
+    void removeAttribute(String attribute);
+
 }

@@ -124,6 +124,10 @@ public class PolymerWrapper {
         once(changedEvent(key), function);
     }
 
+    public Promise when(final Lifecycle.State state) {
+        return lifecycle().promise(state);
+    }
+
     public Promise whenEvent(final String event) {
         final Promise.Deferred deferred = GQuery.Deferred();
         once(event, new Function() {

@@ -12,14 +12,13 @@ import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
 public class Dialog extends PolymerWidget implements HasOpenHandlers<Dialog>, HasCloseHandlers<Dialog> {
-    @SuppressWarnings("ALL")
     @JsType(isNative = true)
     public interface ClosingReason {
         @JsProperty
-        public boolean isCanceled();
+        boolean isCanceled();
 
         @JsProperty
-        public boolean isConfirmed();
+        boolean isConfirmed();
 
     }
 
@@ -34,9 +33,9 @@ public class Dialog extends PolymerWidget implements HasOpenHandlers<Dialog>, Ha
 
     public Dialog(String html) {
         super("paper-dialog", html);
-        setAttribute("entry-animation", "scale-up-animation");
-        setAttribute("exit-animation", "fade-out-animation");
-        setAttribute("with-backdrop", "");
+        w().setAttribute("entry-animation", "scale-up-animation");
+        w().setAttribute("exit-animation", "fade-out-animation");
+        w().setAttribute("with-backdrop", "");
     }
 
     void enableHistory() {
@@ -64,7 +63,7 @@ public class Dialog extends PolymerWidget implements HasOpenHandlers<Dialog>, Ha
                     }
                 }
             };
-            onPropertyChange("opened", this.onOpened);
+            w().onPropertyChange("opened", this.onOpened);
         }
     }
 
@@ -74,7 +73,7 @@ public class Dialog extends PolymerWidget implements HasOpenHandlers<Dialog>, Ha
             this.historyHandlerRegistration = null;
         }
         if (this.onOpened != null) {
-            offPropertyChange("opened", this.onOpened);
+            w().offPropertyChange("opened", this.onOpened);
             this.onOpened = null;
         }
     }
@@ -103,11 +102,11 @@ public class Dialog extends PolymerWidget implements HasOpenHandlers<Dialog>, Ha
     }
 
     public boolean isOpened() {
-        return get("opened");
+        return w().get("opened");
     }
 
     public ClosingReason getClosingReason() {
-        return get("closingReason");
+        return w().get("closingReason");
     }
 
     String getDialogParameter() {
@@ -145,13 +144,13 @@ public class Dialog extends PolymerWidget implements HasOpenHandlers<Dialog>, Ha
         if (isOpened() == opened) {
             deferred.resolve(opened);
         } else {
-            once(opened ? Events.OVERLAY_OPENED : Events.OVERLAY_CLOSED, new Function() {
+            w().once(opened ? Events.OVERLAY_OPENED : Events.OVERLAY_CLOSED, new Function() {
                 @Override
                 public void f() {
                     deferred.resolve(opened);
                 }
             });
-            set("opened", opened);
+            w().set("opened", opened);
         }
         return deferred.promise();
     }
