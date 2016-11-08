@@ -14,4 +14,10 @@ public class Credentials {
     @JsProperty
     public native void setFacebook(String facebook);
 
+    @JsProperty
+    public native String getGoogle();
+
+    @JsProperty
+    public native void setGoogle(String google);
+
 }

@@ -14,6 +14,12 @@ public interface Credential {
     void setAccess_token(String access_token);
 
     @JsProperty
+    String getClient_id();
+
+    @JsProperty
+    void setClient_id(String client_id);
+
+    @JsProperty
     String getExpires();
 
     @JsProperty
