@@ -1,10 +1,10 @@
 package com.github.spirylics.xgwt.firebase.database;
 
 import com.github.spirylics.xgwt.essential.Fn;
+import com.github.spirylics.xgwt.essential.Error;
+import com.github.spirylics.xgwt.essential.Promise;
 import com.github.spirylics.xgwt.essential.XMapper;
-import com.github.spirylics.xgwt.firebase.Error;
 import com.github.spirylics.xgwt.firebase.Event;
-import com.github.spirylics.xgwt.firebase.Promise;
 import com.google.common.base.Joiner;
 import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsProperty;

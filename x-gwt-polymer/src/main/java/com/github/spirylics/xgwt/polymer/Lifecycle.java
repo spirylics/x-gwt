@@ -1,5 +1,6 @@
 package com.github.spirylics.xgwt.polymer;
 
+import com.github.spirylics.xgwt.essential.XGWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
@@ -46,7 +47,8 @@ public class Lifecycle {
         if (state.isResolvedWith(this.state)) {
             deferred.resolve();
         } else {
-            XPolymer.promise(this.element, state.name(), deferred);
+            Polymer.dom().flush();
+            XGWT.promise(this.element, state.name(), deferred);
         }
         return deferred.promise();
     }
@@ -58,7 +60,8 @@ public class Lifecycle {
     }
 
     private void life(final State state) {
-        XPolymer.extend(this.element, state.name(), new Function() {
+        Polymer.dom().flush();
+        XGWT.extend(this.element, state.name(), new Function() {
             @Override
             public void f() {
                 setState(state);

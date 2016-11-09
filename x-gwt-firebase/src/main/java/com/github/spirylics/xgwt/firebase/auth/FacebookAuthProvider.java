@@ -12,7 +12,7 @@ public class FacebookAuthProvider extends AuthProvider {
     }
 
     @JsMethod
-    public native AuthCredential credential(String token);
+    public static native AuthCredential credential(String token);
 
 
 }

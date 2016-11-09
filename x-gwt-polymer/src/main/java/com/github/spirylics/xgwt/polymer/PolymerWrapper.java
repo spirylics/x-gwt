@@ -13,7 +13,7 @@ public class PolymerWrapper {
 
     public PolymerWrapper(Object target) {
         this.$ = com.google.gwt.query.client.GQuery.$(target);
-        this.lifecycle = XPolymer.lifecycle(el());
+        this.lifecycle = new Lifecycle(el());
     }
 
     public GQuery $() {
@@ -45,8 +45,18 @@ public class PolymerWrapper {
         return call(Lifecycle.State.attached, method, args);
     }
 
+    public PolymerWrapper addClass(String... classes) {
+        $().addClass(classes);
+        return this;
+    }
+
     public String getAttribute(String key) {
-        return $.attr(key);
+        return $().attr(key);
+    }
+
+    public PolymerWrapper removeAttribute(String key) {
+        $().removeAttr(key);
+        return this;
     }
 
     public PolymerWrapper setAttribute(String key, Object value) {
@@ -114,6 +124,10 @@ public class PolymerWrapper {
         once(changedEvent(key), function);
     }
 
+    public Promise when(final Lifecycle.State state) {
+        return lifecycle().promise(state);
+    }
+
     public Promise whenEvent(final String event) {
         final Promise.Deferred deferred = GQuery.Deferred();
         once(event, new Function() {
@@ -150,5 +164,35 @@ public class PolymerWrapper {
 
     String changedEvent(String key) {
         return key + "-changed";
+    }
+
+    public DomApi domApi() {
+        return Polymer.dom(this.el());
+    }
+
+    public PolymerElement $$(String selector) {
+        return domApi().querySelector(selector);
+    }
+
+    public PolymerElement[] querySelectorAll(String selector) {
+        return domApi().querySelectorAll(selector);
+    }
+
+    public PolymerWrapper appendChild(PolymerElement element) {
+        domApi().appendChild(element);
+        return this;
+    }
+
+    public PolymerWrapper appendChild(Element element) {
+        domApi().appendChild(element);
+        return this;
+    }
+
+    public PolymerWrapper appendChild(PolymerWrapper polymerWrapper) {
+        return appendChild(polymerWrapper.el());
+    }
+
+    public PolymerWrapper appendChild(PolymerWidget polymerWidget) {
+        return appendChild(polymerWidget.w());
     }
 }

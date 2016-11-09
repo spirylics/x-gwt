@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.spirylics.xgwt</groupId>
-    <artifactId>x-gwt-server</artifactId>
+    <artifactId>x-gwt-hello</artifactId>
     <packaging>jar</packaging>
     <version>1.7-SNAPSHOT</version>
     <name>${project.artifactId}</name>
@@ -14,20 +14,20 @@
         <version>1.7-SNAPSHOT</version>
     </parent>
 
-    <properties>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-servlet</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>com.github.spirylics.xgwt</groupId>
+            <artifactId>x-gwt-essential</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
