@@ -1,16 +1,12 @@
 package com.github.spirylics.xgwt.polymer;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Node;
-import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.Promise;
+import com.github.spirylics.xgwt.essential.GQueryElement;
 import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsProperty;
 import jsinterop.annotations.JsType;
 
 @JsType(isNative = true)
-public interface PolymerElement extends Base {
+public interface PolymerElement extends GQueryElement {
 
     @JsProperty
     PolymerWrapper getPolymerWrapper();
@@ -26,13 +22,4 @@ public interface PolymerElement extends Base {
         return getPolymerWrapper();
     }
 
-    @JsOverlay
-    default GQuery $() {
-        return w().$();
-    }
-
-    @JsOverlay
-    default Element el() {
-        return w().el();
-    }
 }

@@ -4,7 +4,6 @@ import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsPackage;
 import jsinterop.annotations.JsType;
 
-@SuppressWarnings("ALL")
 @JsType(isNative = true, namespace = JsPackage.GLOBAL)
 public class Thenable<S, E> {
 

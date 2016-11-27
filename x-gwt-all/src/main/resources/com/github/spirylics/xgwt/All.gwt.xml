@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='xgwtall'>
+    <inherits name='com.github.spirylics.xgwt.Essential'/>
+    <inherits name='com.github.spirylics.xgwt.Firebase'/>
+    <inherits name='com.github.spirylics.xgwt.Cordova'/>
+    <inherits name='com.github.spirylics.xgwt.Analytics'/>
+    <inherits name='com.github.spirylics.xgwt.Polymer'/>
+    <inherits name='com.github.spirylics.xgwt.Hello'/>
+</module>

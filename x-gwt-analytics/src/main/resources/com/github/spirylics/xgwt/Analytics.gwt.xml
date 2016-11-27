@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to='xgwtanalytics'>
     <inherits name='com.google.gwt.user.User'/>
-    <inherits name='com.github.spirylics.xgwt.essential'/>
-    <inherits name='com.github.spirylics.xgwt.cordova'/>
+    <inherits name='com.github.spirylics.xgwt.Essential'/>
+    <inherits name='com.github.spirylics.xgwt.Cordova'/>
     <inherits name="com.arcbees.analytics.Analytics"/>
     <inherits name='com.gwtplatform.mvp.Mvp'/>
     <set-property name="phonegap.logging.remoteHandler" value="DISABLED"/>
