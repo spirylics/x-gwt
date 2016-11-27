@@ -22,12 +22,16 @@ Just a [firebase](https://firebase.google.com/) wrapper.
 </dependency>
 ```
 
+* Add gwt module :
+
+```xml
+<inherits name="com.github.spirylics.xgwt.Firebase"/>
+```
+
 * Based on [gwt-jackson](https://github.com/nmorel/gwt-jackson), initialize json mapping such as :
 
 ```java
-XMapper.addMappers(ImmutableMap.of(
-            Foo.class, GWT.<ObjectMapper>create(FooMapper.class),
-            Bar.class, GWT.<ObjectMapper>create(BarMapper.class));
+XMapper.addMappers(ImmutableMap.of(Foo.class, GWT.<ObjectMapper>create(FooMapper.class));
 ```
 
 * Initialize Firebase :
