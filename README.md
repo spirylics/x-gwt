@@ -4,13 +4,13 @@
 
 XGWT is a light library for GWT which provides useful component often wrapped from js library.
 
-* [Analytics](x-gwt-analytics/Readme.md)
-* [Cordova](x-gwt-cordova/Readme.md)
-* [Essential](x-gwt-essential/Readme.md)
-* [Firebase](x-gwt-firebase/Readme.md)
-* [Hello](x-gwt-hello/Readme.md)
-* [Polymer](x-gwt-polymer/Readme.md)
-* [Server](x-gwt-server/Readme.md)
+* [Analytics](x-gwt-analytics)
+* [Cordova](x-gwt-cordova)
+* [Essential](x-gwt-essential)
+* [Firebase](x-gwt-firebase)
+* [Hello](x-gwt-hello)
+* [Polymer](x-gwt-polymer)
+* [Server](x-gwt-server)
 
 ## What does XGWT needed ?
 
