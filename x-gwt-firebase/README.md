@@ -45,7 +45,9 @@ Firebase firebase = Firebase.initializeApp(config);
 
 ```java
 Reference reference = getFirebase().database().ref().xChild("foo", "1");
-reference.xOnce(Event.value).then(fooSnapshot -> { Foo foo = starSnapshot.val(Foo.class); }, err -> logger.severe(":(" + err));
+reference.xOnce(Event.value).then(
+    fooSnapshot -> { Foo foo = starSnapshot.val(Foo.class); }, 
+    err -> logger.severe(":(" + err));
 ```
 
 
