@@ -1,5 +1,6 @@
 package com.github.spirylics.xgwt.firebase.database;
 
+
 import com.github.spirylics.xgwt.essential.Fn;
 import com.github.spirylics.xgwt.essential.XMapper;
 
@@ -32,12 +33,7 @@ public class XDataSnapshot {
     }
 
     public boolean forEach(final Fn.Arg<XDataSnapshot> fn) {
-        return dataSnapshot.forEach(new Fn.Arg<DataSnapshot<Object>>() {
-            @Override
-            public void e(DataSnapshot<Object> dataSnapshot) {
-                fn.e(new XDataSnapshot(dataSnapshot));
-            }
-        });
+        return dataSnapshot.forEach(dataSnapshot1 -> fn.e(new XDataSnapshot(dataSnapshot1)));
     }
 
     public boolean hasChild(String path) {
