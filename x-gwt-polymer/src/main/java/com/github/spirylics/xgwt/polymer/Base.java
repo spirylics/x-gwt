@@ -1,15 +1,17 @@
 package com.github.spirylics.xgwt.polymer;
 
 
+import com.github.spirylics.xgwt.essential.Element;
 import com.github.spirylics.xgwt.essential.Fn;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.Event;
+import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsType;
 
 @JsType(isNative = true)
 public interface Base {
 
-    PolymerElement $$(String selector);
+    <E extends Element> E $$(String selector);
 
     void toggleClass(String name, boolean b, Element node);
 
@@ -35,4 +37,5 @@ public interface Base {
 
     String resolveUrl(String url);
 
+    Event fire(String type);
 }

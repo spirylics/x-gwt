@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.Promise.Deferred;
 import com.google.gwt.query.client.js.JsUtils;
@@ -41,7 +42,7 @@ public class XGWT {
         extend(element, functionName, JsUtils.wrapFunction(fn));
     }
 
-    public static native void extend(final Element element, final String functionName, final JavaScriptObject fn) /*-{
+    public static native void extend(final Object element, final String functionName, final JavaScriptObject fn) /*-{
         var wrap = element[functionName];
         element[functionName] = function (fn, wrap) {
             return function () {
@@ -52,4 +53,28 @@ public class XGWT {
             };
         }(fn, wrap);
     }-*/;
+
+    public static void extend(final com.github.spirylics.xgwt.essential.Element element, final String functionName, final java.util.function.Function fn) {
+        extend(element, functionName, wrapFunction(fn));
+    }
+
+    public static native JavaScriptObject wrapFunction(final java.util.function.Function f) /*-{
+        return function(r) {
+            var o = @java.util.ArrayList::new()();
+            for (i in arguments) {
+                r = @com.google.gwt.query.client.js.JsCache::gwtBox(*)([arguments[i]]);
+                o.@java.util.ArrayList::add(Ljava/lang/Object;)(r);
+            }
+            o = o.@java.util.ArrayList::toArray()();
+            return f.@java.util.function.Function::apply(*)(o);
+        }
+    }-*/;
+
+    public static <S, E> Promise promiseToGPromise(com.github.spirylics.xgwt.essential.Promise<S, E> promise) {
+        Promise.Deferred deferred = GQuery.Deferred();
+        promise.then(arg -> {
+            deferred.resolve(arg);
+        }, arg -> deferred.resolve(arg));
+        return deferred.promise();
+    }
 }
