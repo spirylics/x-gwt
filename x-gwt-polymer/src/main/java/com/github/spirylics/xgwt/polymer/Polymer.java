@@ -1,6 +1,6 @@
 package com.github.spirylics.xgwt.polymer;
 
-import com.google.gwt.dom.client.Element;
+import com.github.spirylics.xgwt.essential.Element;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
@@ -20,10 +20,13 @@ public abstract class Polymer {
     public static native Dom dom();
 
     @JsMethod
-    public static native DomApi dom(PolymerElement element);
+    public static native DomApi dom(Base base);
 
     @JsMethod
     public static native DomApi dom(Element element);
+
+    @JsMethod
+    public static native DomApi dom(com.google.gwt.dom.client.Element element);
 
     @JsOverlay
     public static Promise googleMapsApiPromise() {

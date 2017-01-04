@@ -1,10 +1,9 @@
 package com.github.spirylics.xgwt.polymer;
 
+import com.github.spirylics.xgwt.essential.Error;
+import com.github.spirylics.xgwt.essential.Promise;
 import com.github.spirylics.xgwt.essential.XGWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.Promise;
 
 public class Lifecycle {
 
@@ -31,26 +30,31 @@ public class Lifecycle {
         }
     }
 
-    final Element element;
+    final PolymerElement polymerElement;
     private State state;
 
     public Lifecycle(final Element element) {
-        this.element = element;
-        if (element.getPropertyBoolean("isAttached")) {
-            setState(State.attached);
-        }
+        this((PolymerElement) element);
+    }
+
+    public Lifecycle(final PolymerElement polymerElement) {
+        this.polymerElement = polymerElement;
+        checkState();
         life(State.values());
     }
 
-    public final Promise promise(State state) {
-        Promise.Deferred deferred = GQuery.Deferred();
-        if (state.isResolvedWith(this.state)) {
-            deferred.resolve();
-        } else {
-            Polymer.dom().flush();
-            XGWT.promise(this.element, state.name(), deferred);
-        }
-        return deferred.promise();
+    public final Promise<State, Error> promise(State state) {
+        return new Promise<>((resolve, reject) -> {
+            if (state.isResolvedWith(getState())) {
+                resolve.e(getState());
+            } else {
+                Polymer.dom().flush();
+                XGWT.extend(this.polymerElement, state.name(), o -> {
+                    resolve.e(getState());
+                    return null;
+                });
+            }
+        });
     }
 
     private void life(final State... states) {
@@ -61,15 +65,20 @@ public class Lifecycle {
 
     private void life(final State state) {
         Polymer.dom().flush();
-        XGWT.extend(this.element, state.name(), new Function() {
-            @Override
-            public void f() {
-                setState(state);
-            }
+        XGWT.extend(this.polymerElement, state.name(), o -> {
+            setState(state);
+            return null;
         });
     }
 
+    private void checkState() {
+        if (polymerElement.el().getPropertyBoolean("isAttached")) {
+            setState(State.attached);
+        }
+    }
+
     public State getState() {
+        checkState();
         return this.state;
     }
 

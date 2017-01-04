@@ -13,4 +13,6 @@ public class Promise<S, E> extends Thenable<S, E> {
     }
 
     public static native <A, B> Promise<A, B> all(Promise<?, ?>... promises);
+
+    public static native <S> Promise<S, Error> resolve(S success);
 }
