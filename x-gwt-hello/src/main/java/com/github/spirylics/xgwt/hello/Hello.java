@@ -24,6 +24,8 @@ public class Hello {
 
     public native Promise<Auth, Error> login(String network);
 
+    public native Promise<Auth, Error> login(String network, Options options);
+
     public native Credential getAuthResponse();
 
 }
