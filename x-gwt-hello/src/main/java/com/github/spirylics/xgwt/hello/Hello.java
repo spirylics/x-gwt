@@ -2,6 +2,7 @@ package com.github.spirylics.xgwt.hello;
 
 
 import com.github.spirylics.xgwt.essential.Promise;
+import com.google.gwt.core.client.JavaScriptObject;
 import jsinterop.annotations.JsMethod;
 import jsinterop.annotations.JsPackage;
 import jsinterop.annotations.JsType;
@@ -25,6 +26,8 @@ public class Hello {
     public native Promise<Auth, Error> login(String network);
 
     public native Promise<Auth, Error> login(String network, Options options);
+
+    public native Promise<JavaScriptObject, Error> api(String path);
 
     public native Credential getAuthResponse();
 
