@@ -95,6 +95,12 @@ public interface PolymerElement extends GQueryElement, Base {
 
     @JsOverlay
     default DomApi domApi() {
+        return Polymer.dom((Base) this);
+    }
+
+    @JsOverlay
+    default DomApi rootDomApi() {
         return Polymer.dom(this.<Element>get("root"));
     }
+
 }
