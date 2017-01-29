@@ -3,12 +3,8 @@ package com.github.spirylics.xgwt.essential;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.Promise;
-import com.google.gwt.query.client.Promise.Deferred;
-import com.google.gwt.query.client.js.JsUtils;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 
 import java.util.Set;
 
@@ -28,19 +24,17 @@ public class XGWT {
         UNCAUGHT_EXCEPTION_HANDLERS.add(handler);
     }
 
-    public static Promise promise(final Element element, final String functionName, final Deferred deferred) {
-        extend(element, functionName, new Function() {
-            @Override
-            public void f() {
-                deferred.resolve();
+    public static native JavaScriptObject wrapFunction(final java.util.function.Function f) /*-{
+        return function (r) {
+            var o = @java.util.ArrayList::new()();
+            for (i in arguments) {
+                r = @com.google.gwt.query.client.js.JsCache::gwtBox(*)([arguments[i]]);
+                o.@java.util.ArrayList::add(Ljava/lang/Object;)(r);
             }
-        });
-        return deferred.promise();
-    }
-
-    public static void extend(final Element element, final String functionName, final Function fn) {
-        extend(element, functionName, JsUtils.wrapFunction(fn));
-    }
+            o = o.@java.util.ArrayList::toArray()();
+            return f.@java.util.function.Function::apply(*)(o);
+        }
+    }-*/;
 
     public static native void extend(final Object element, final String functionName, final JavaScriptObject fn) /*-{
         var wrap = element[functionName];
@@ -58,23 +52,37 @@ public class XGWT {
         extend(element, functionName, wrapFunction(fn));
     }
 
-    public static native JavaScriptObject wrapFunction(final java.util.function.Function f) /*-{
-        return function(r) {
-            var o = @java.util.ArrayList::new()();
-            for (i in arguments) {
-                r = @com.google.gwt.query.client.js.JsCache::gwtBox(*)([arguments[i]]);
-                o.@java.util.ArrayList::add(Ljava/lang/Object;)(r);
+    public static boolean exists(String... properties) {
+        for (String property : properties) {
+            if (!exists(property)) {
+                return false;
             }
-            o = o.@java.util.ArrayList::toArray()();
-            return f.@java.util.function.Function::apply(*)(o);
         }
+        return true;
+    }
+
+    public static native boolean exists(String property) /*-{
+        return typeof $wnd[name] !== 'undefined' && $wnd[name] !== null;
     }-*/;
 
-    public static <S, E> Promise promiseToGPromise(com.github.spirylics.xgwt.essential.Promise<S, E> promise) {
-        Promise.Deferred deferred = GQuery.Deferred();
-        promise.then(arg -> {
-            deferred.resolve(arg);
-        }, arg -> deferred.resolve(arg));
-        return deferred.promise();
+
+    public static Promise<Void, Exception> loadScript(String url, String... properties) {
+        return new Promise<>((resolve, reject) -> {
+            if (exists(properties)) {
+                resolve.e(null);
+            } else {
+                Ajax.loadScript(url).done(new Function() {
+                    @Override
+                    public void f() {
+                        resolve.e(null);
+                    }
+                }).fail(new Function() {
+                    @Override
+                    public void f() {
+                        reject.e(new Exception(url + " not loaded"));
+                    }
+                });
+            }
+        });
     }
 }

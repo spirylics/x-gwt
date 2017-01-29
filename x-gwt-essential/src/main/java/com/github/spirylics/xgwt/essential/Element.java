@@ -1,5 +1,6 @@
 package com.github.spirylics.xgwt.essential;
 
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
@@ -7,6 +8,8 @@ import jsinterop.annotations.JsOverlay;
 import jsinterop.annotations.JsType;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @JsType(isNative = true)
@@ -15,6 +18,15 @@ public interface Element {
     @JsOverlay
     static <E extends Element> E create(String tag) {
         return (E) DOM.createElement(tag);
+    }
+
+    @JsOverlay
+    static <E extends Element> E create(String tag, Map<String, Object> attributes) {
+        return (E) GQuery.$("<" + tag + " "
+                + attributes.entrySet().stream()
+                .map(e -> e.getKey() + "=\"" + XMapper.get().write(e.getValue()) + "\"")
+                .collect(Collectors.joining(" "))
+                + "></" + tag + ">").get(0);
     }
 
     void addEventListener(String event, Fn.Arg<Event> function, boolean useCapture);
