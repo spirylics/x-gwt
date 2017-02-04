@@ -7,6 +7,9 @@ import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.plugins.deferred.PromiseFunction;
 import jsinterop.annotations.*;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.body;
 
@@ -49,5 +52,13 @@ public abstract class Polymer {
                 }
             }
         };
+    }
+
+    @JsOverlay
+    public static String toCamelCase(String text) {
+        String bactrianCamel = Stream.of(text.split("[^a-zA-Z0-9]"))
+                .map(v -> v.substring(0, 1).toUpperCase() + v.substring(1).toLowerCase())
+                .collect(Collectors.joining());
+        return bactrianCamel.toLowerCase().substring(0, 1) + bactrianCamel.substring(1);
     }
 }

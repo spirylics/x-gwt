@@ -61,33 +61,35 @@ public interface PolymerElement extends GQueryElement, Base {
 
     @JsOverlay
     default <P> HandlerRegistration onPropertyChange(final String key, Fn.Arg<P> onChangeFunction, final Predicate<P>... predicates) {
+        final String camelKey = Polymer.toCamelCase(key);
         return on(
                 changedEvent(key),
                 event -> {
                     PolymerElement p = event.getElement();
-                    onChangeFunction.e(p.get(key));
+                    onChangeFunction.e(p.get(camelKey));
                 },
                 Stream.empty(),
                 Arrays.stream(predicates).map(predicate -> event -> {
                     PolymerElement p = event.getElement();
-                    return predicate.test(p.get(key));
+                    return predicate.test(p.get(camelKey));
                 }));
     }
 
     @JsOverlay
     default <P> Promise<P, Error> whenProperty(final String key, final Predicate<P>... predicates) {
-        P property = get(key);
+        final String camelKey = Polymer.toCamelCase(key);
+        P property = get(camelKey);
         if (Arrays.stream(predicates).reduce(Predicate::and).orElse(e -> true).test(property)) {
             return Promise.resolve(property);
         } else {
             return once(changedEvent(key), Arrays.stream(predicates).map(predicate -> (Predicate<XEvent>) event -> {
                 PolymerElement p = event.getElement();
-                return predicate.test(p.get(key));
+                return predicate.test(p.get(camelKey));
             })).then(new Fn.ArgRet<XEvent, P>() {
                 @Override
                 public P e(XEvent event) {
                     PolymerElement p = event.getElement();
-                    return p.get(key);
+                    return p.get(camelKey);
                 }
             });
         }
