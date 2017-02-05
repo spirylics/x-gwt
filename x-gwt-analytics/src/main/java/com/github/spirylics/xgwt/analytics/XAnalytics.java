@@ -13,11 +13,8 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.plugins.deferred.Deferred;
-import com.googlecode.gwtphonegap.client.device.Device;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.gwtplatform.mvp.shared.proxy.TokenFormatter;
-
-import javax.annotation.Nullable;
 
 public class XAnalytics {
     final Analytics analytics;
@@ -37,42 +34,30 @@ public class XAnalytics {
         this.tokenFormatter = tokenFormatter;
         this.appName = appName;
         this.appVersion = appVersion;
-        cordova.getDevicePromise().done(new Function() {
-            @Override
-            public Object f(Object... args) {
-                if (cordova.isNative()) {
-                    Device device = (Device) args[0];
-                    analytics.create().clientId(device.getUuid()).storage(Storage.NONE).go();
-                    analytics.setGlobalSettings().generalOptions().disableTask(Task.CHECK_PROTOCOL).go();
-                    analytics.enablePlugin(AnalyticsPlugin.DISPLAY);
-                    sendRequestFn = new com.google.common.base.Function<PlaceRequest, Void>() {
-                        @Override
-                        public Void apply(@Nullable PlaceRequest placeRequest) {
-                            analytics.sendScreenView()
-                                    .screenName(getPlaceToken(placeRequest))
-                                    .appTrackingOptions()
-                                    .applicationName(appName)
-                                    .applicationVersion(appVersion)
-                                    .go();
-                            ;
-                            return null;
-                        }
-                    };
-                    readyDeferred.resolve();
+        cordova.getDevicePromise().then(device -> {
+            if (cordova.isNative()) {
+                analytics.create().clientId(device.getUuid()).storage(Storage.NONE).go();
+                analytics.setGlobalSettings().generalOptions().disableTask(Task.CHECK_PROTOCOL).go();
+                analytics.enablePlugin(AnalyticsPlugin.DISPLAY);
+                sendRequestFn = placeRequest -> {
+                    analytics.sendScreenView()
+                            .screenName(getPlaceToken(placeRequest))
+                            .appTrackingOptions()
+                            .applicationName(appName)
+                            .applicationVersion(appVersion)
+                            .go();
+                    ;
                     return null;
-                } else {
-                    analytics.create().go();
-                    analytics.enablePlugin(AnalyticsPlugin.DISPLAY);
-                    sendRequestFn = new com.google.common.base.Function<PlaceRequest, Void>() {
-                        @Override
-                        public Void apply(@Nullable PlaceRequest placeRequest) {
-                            analytics.sendPageView().documentPath(getPlaceToken(placeRequest)).go();
-                            return null;
-                        }
-                    };
-                    readyDeferred.resolve();
-                }
-                return null;
+                };
+                readyDeferred.resolve();
+            } else {
+                analytics.create().go();
+                analytics.enablePlugin(AnalyticsPlugin.DISPLAY);
+                sendRequestFn = placeRequest -> {
+                    analytics.sendPageView().documentPath(getPlaceToken(placeRequest)).go();
+                    return null;
+                };
+                readyDeferred.resolve();
             }
         });
     }

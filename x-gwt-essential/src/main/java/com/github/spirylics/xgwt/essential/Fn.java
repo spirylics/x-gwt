@@ -30,4 +30,9 @@ public abstract class Fn {
     public interface Resolver<S, E> {
         void e(Fn.Arg<S> resolve, Fn.Arg<E> reject);
     }
+
+    @JsFunction
+    public interface OpenResolver<S, E> {
+        void e(Fn.Arg<S> resolve, Fn.Arg<E> reject);
+    }
 }

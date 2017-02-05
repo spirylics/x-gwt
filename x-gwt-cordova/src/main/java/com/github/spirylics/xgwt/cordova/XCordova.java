@@ -1,10 +1,8 @@
 package com.github.spirylics.xgwt.cordova;
 
+import com.github.spirylics.xgwt.essential.Promise;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.js.JsUtils;
-import com.google.gwt.query.client.plugins.deferred.PromiseFunction;
 import com.google.gwt.user.client.Window;
 import com.googlecode.gwtphonegap.client.*;
 import com.googlecode.gwtphonegap.client.device.Device;
@@ -29,43 +27,35 @@ public class XCordova {
         this.geolocationOptions.setMaximumAge(60000);
     }
 
-    public XCordova initialize(final Promise.Deferred deferred) {
+    public XCordova initialize(final Promise<Void, Object> promise) {
         phoneGap.addHandler(new PhoneGapAvailableHandler() {
             @Override
             public void onPhoneGapAvailable(PhoneGapAvailableEvent phoneGapAvailableEvent) {
-                deferred.resolve();
+                promise.openResolve(null);
             }
         });
         phoneGap.addHandler(new PhoneGapTimeoutHandler() {
             @Override
             public void onPhoneGapTimeout(PhoneGapTimeoutEvent phoneGapTimeoutEvent) {
-                deferred.reject();
+                promise.openReject(phoneGapTimeoutEvent);
             }
         });
         phoneGap.initializePhoneGap();
         return this;
     }
 
-    public Promise initialize() {
-        return new PromiseFunction() {
-            @Override
-            public void f(Deferred deferred) {
-                initialize(deferred);
-            }
-        };
+    public Promise<Void, Object> initialize() {
+        Promise<Void, Object> promise = Promise.buildOpenPromise();
+        initialize(promise);
+        return promise;
     }
 
     public Device getDevice() {
         return phoneGap.getDevice();
     }
 
-    public Promise getDevicePromise() {
-        return initialize().then(new Function() {
-            @Override
-            public Object f(Object... args) {
-                return phoneGap.getDevice();
-            }
-        });
+    public Promise<Device, Object> getDevicePromise() {
+        return initialize().then(() -> phoneGap.getDevice());
     }
 
     public XCordova hideSplashScreen() {
