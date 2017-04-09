@@ -15,7 +15,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <version.guice>4.0</version.guice>
+        <version.guice>4.1.0</version.guice>
         <version.guava>20.0</version.guava>
         <version.gwt>2.8.0</version.gwt>
         <version.gwtp>1.6</version.gwtp>
