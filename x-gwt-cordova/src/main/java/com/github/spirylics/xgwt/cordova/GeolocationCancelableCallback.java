@@ -13,6 +13,9 @@ public class GeolocationCancelableCallback implements GeolocationCallback {
 
     void setCanceled(boolean canceled) {
         this.canceled = canceled;
+        if (canceled) {
+            onCancel();
+        }
     }
 
     public GeolocationCancelableCallback cancel() {
@@ -33,6 +36,10 @@ public class GeolocationCancelableCallback implements GeolocationCallback {
         if (!isCanceled()) {
             onCancelableFailure(error);
         }
+    }
+
+    public void onCancel() {
+
     }
 
     public void onCancelableSuccess(Position position) {
