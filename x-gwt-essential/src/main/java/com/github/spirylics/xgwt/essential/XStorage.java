@@ -1,7 +1,6 @@
 package com.github.spirylics.xgwt.essential;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -93,12 +92,8 @@ public class XStorage implements StorageEvent.Handler {
     }
 
     public <T> List<String> findRaw(final Class<T> clazz) {
-        return Ordering.natural().sortedCopy(Maps.filterKeys(getStorageMap(), new Predicate<String>() {
-            @Override
-            public boolean apply(String input) {
-                return Strings.emptyToNull(input).startsWith(clazz.getSimpleName());
-            }
-        }).values());
+        return Ordering.natural().sortedCopy(Maps.filterKeys(getStorageMap(),
+                input -> Strings.emptyToNull(input).startsWith(clazz.getSimpleName())).values());
     }
 
     StorageMap getStorageMap() {

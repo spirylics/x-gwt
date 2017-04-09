@@ -46,7 +46,6 @@ public class XAnalytics {
                             .applicationName(appName)
                             .applicationVersion(appVersion)
                             .go();
-                    ;
                     return null;
                 };
                 readyDeferred.resolve();
@@ -66,12 +65,12 @@ public class XAnalytics {
         return tokenFormatter.toPlaceToken(placeRequest);
     }
 
-    public final XAnalytics startTiming(final String category, final String variable) {
+    public XAnalytics startTiming(final String category, final String variable) {
         analytics.startTimingEvent(category, variable);
         return this;
     }
 
-    public final XAnalytics endTiming(final String category, final String variable, final String... labels) {
+    public XAnalytics endTiming(final String category, final String variable, final String... labels) {
         final TimingOptions timingOptions = analytics.endTimingEvent(category, variable);
         return whenReady(new Function() {
             @Override
@@ -85,7 +84,7 @@ public class XAnalytics {
         });
     }
 
-    public final XAnalytics sendPlaceRequest(final PlaceRequest placeRequest) {
+    public XAnalytics sendPlaceRequest(final PlaceRequest placeRequest) {
         return whenReady(new Function() {
             @Override
             public void f() {
@@ -94,7 +93,7 @@ public class XAnalytics {
         });
     }
 
-    public final XAnalytics sendException(final Throwable throwable, final boolean fatal) {
+    public XAnalytics sendException(final Throwable throwable, final boolean fatal) {
         return whenReady(new Function() {
             @Override
             public void f() {
@@ -107,7 +106,7 @@ public class XAnalytics {
         });
     }
 
-    public final XAnalytics sendEvent(final String category, final String action, final String label, final Integer value) {
+    public XAnalytics sendEvent(final String category, final String action, final String label, final Integer value) {
         return whenReady(new Function() {
             @Override
             public void f() {
