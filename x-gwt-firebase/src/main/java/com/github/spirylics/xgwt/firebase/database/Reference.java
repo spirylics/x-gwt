@@ -43,6 +43,12 @@ public class Reference {
 
     public native Reference orderByValue();
 
+    public native Reference startAt(Object value, String key);
+
+    public native Reference endAt(Object value, String key);
+
+    public native Reference equalTo(Object value, String key);
+
     public native Reference push();
 
     public native <D> Promise<Void, Error> push(D data);
