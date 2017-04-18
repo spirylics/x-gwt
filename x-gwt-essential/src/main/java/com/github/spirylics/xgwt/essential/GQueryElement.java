@@ -21,6 +21,7 @@ public interface GQueryElement extends Element {
     @JsProperty
     GQuery getGQuery();
 
+    @SuppressWarnings("unusable-by-js")
     @JsProperty
     void setGQuery(GQuery gQuery);
 
