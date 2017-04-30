@@ -77,7 +77,7 @@ public interface GQueryElement extends Element {
         final Optional<Predicate<XEvent>> predicateOpt = predicateStream.reduce(Predicate::and);
         final Predicate<XEvent> predicate = predicateOpt.orElse(e -> true);
         final Fn.Arg<Event> wrapFn = event -> {
-            XEvent xEvent = new XEvent(event, this);
+            XEvent xEvent = new XEvent(event);
             if (predicate.test(xEvent)) {
                 onFunction.e(xEvent);
             }
