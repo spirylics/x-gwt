@@ -3,9 +3,18 @@ package com.github.spirylics.xgwt.polymer;
 import com.github.spirylics.xgwt.essential.Error;
 import com.github.spirylics.xgwt.essential.Promise;
 import com.github.spirylics.xgwt.essential.XGWT;
+import com.google.common.collect.Sets;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.shared.HandlerRegistration;
+
+import java.util.Set;
+import java.util.stream.Stream;
 
 public class Lifecycle {
+
+    public interface ChangeConsumer {
+        void change(State previous, State current);
+    }
 
     public enum State {
         detached, attached, ready(attached), created(ready);
@@ -32,6 +41,7 @@ public class Lifecycle {
 
     final PolymerElement polymerElement;
     private State state;
+    private Set<ChangeConsumer> changeConsumers = Sets.newHashSet();
 
     public Lifecycle(final Element element) {
         this((PolymerElement) element);
@@ -58,9 +68,7 @@ public class Lifecycle {
     }
 
     private void life(final State... states) {
-        for (State state : states) {
-            life(state);
-        }
+        Stream.of(states).forEach(this::life);
     }
 
     private void life(final State state) {
@@ -83,6 +91,15 @@ public class Lifecycle {
     }
 
     private void setState(State state) {
-        this.state = state;
+        if (state != this.state) {
+            State prev = this.state;
+            this.state = state;
+            changeConsumers.forEach(c -> c.change(prev, this.state));
+        }
+    }
+
+    public HandlerRegistration onStateChange(final ChangeConsumer consumer) {
+        changeConsumers.add(consumer);
+        return () -> changeConsumers.remove(consumer);
     }
 }
