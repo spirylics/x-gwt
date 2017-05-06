@@ -1,7 +1,6 @@
 package com.github.spirylics.xgwt.essential;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.logging.client.NullLogHandler;
 
@@ -11,18 +10,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class XLogger implements GWT.UncaughtExceptionHandler {
+    private final static Joiner JOINER = Joiner.on(": ").skipNulls();
+
     final Logger logger;
-    final Joiner joiner = Joiner.on(": ").skipNulls();
-
-    String appName;
-    String appVersion;
-    String platform;
-    String version;
-    String model;
-
-    public XLogger(String loggingPackage) {
-        this(Logger.getLogger(loggingPackage));
-    }
 
     public XLogger(Logger logger) {
         this.logger = logger;
@@ -34,39 +24,10 @@ public class XLogger implements GWT.UncaughtExceptionHandler {
     }
 
     public XLogger addHandlerIfNotNull(Handler h) {
-        if (!(h instanceof NullLogHandler)) {
+        if (h != null && !(h instanceof NullLogHandler)) {
             logger.addHandler(h);
         }
         return this;
-    }
-
-    public XLogger setAppName(String appName) {
-        this.appName = Strings.emptyToNull(appName);
-        return this;
-    }
-
-    public XLogger setAppVersion(String appVersion) {
-        this.appVersion = Strings.emptyToNull(appVersion);
-        return this;
-    }
-
-    public XLogger setPlatform(String platform) {
-        this.platform = Strings.emptyToNull(platform);
-        return this;
-    }
-
-    public XLogger setVersion(String version) {
-        this.version = Strings.emptyToNull(version);
-        return this;
-    }
-
-    public XLogger setModel(String model) {
-        this.model = Strings.emptyToNull(model);
-        return this;
-    }
-
-    private String formatMessage(String msg) {
-        return joiner.join(platform, version, model, appName, appVersion, msg);
     }
 
     private String formatMessage(String format, Object... args) {
@@ -76,7 +37,7 @@ public class XLogger implements GWT.UncaughtExceptionHandler {
                     ? Arrays.toString((Object[]) args[i])
                     : String.valueOf(args[i]));
         }
-        return formatMessage(msg);
+        return JOINER.join(XContext.get().getPlatform(), XContext.get().getVersion(), XContext.get().getModel(), XContext.get().getAppName(), XContext.get().getAppVersion(), msg);
     }
 
     private void log(Level level, String format, Throwable t, Object... args) {
