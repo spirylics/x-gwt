@@ -2,10 +2,7 @@ package com.github.spirylics.xgwt.essential;
 
 
 import com.google.common.base.MoreObjects;
-import jsinterop.annotations.JsMethod;
-import jsinterop.annotations.JsOverlay;
-import jsinterop.annotations.JsPackage;
-import jsinterop.annotations.JsType;
+import jsinterop.annotations.*;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -17,8 +14,9 @@ import static com.google.gwt.query.client.GQuery.$;
 @JsType(isNative = true, name = "Object", namespace = JsPackage.GLOBAL)
 public class XObject {
 
-    @JsMethod
-    public static native XObject create();
+    @JsConstructor
+    public XObject() {
+    }
 
     @JsMethod
     public static native String[] keys(XObject smartJsObj);

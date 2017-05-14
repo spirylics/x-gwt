@@ -7,11 +7,9 @@ import com.github.spirylics.xgwt.firebase.auth.User;
 import com.github.spirylics.xgwt.firebase.database.EventRegistration;
 import com.github.spirylics.xgwt.firebase.database.Reference;
 import com.github.spirylics.xgwt.firebase.database.XDataSnapshot;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,15 +44,11 @@ public class FirebaseRegister {
     }
 
     public void enableFirebaseEvents() {
-        for (HandlerRegistration handlerRegistration : Sets.newHashSet(handlerRegistrations.keySet())) {
-            handlerRegistration.on();
-        }
+        Sets.newHashSet(handlerRegistrations.keySet()).forEach(HandlerRegistration::on);
     }
 
     public void disableFirebaseEvents() {
-        for (HandlerRegistration handlerRegistration : Sets.newHashSet(handlerRegistrations.keySet())) {
-            handlerRegistration.off();
-        }
+        Sets.newHashSet(handlerRegistrations.keySet()).forEach(HandlerRegistration::off);
     }
 
     public void removeRegistration(HandlerRegistration handlerRegistration) {
@@ -66,20 +60,11 @@ public class FirebaseRegister {
 
     public void removeFirebaseAuthEvents() {
         Set<HandlerRegistration> authHandlerRegistrations = Maps
-                .filterValues(handlerRegistrations, new Predicate<Boolean>() {
-                    @Override
-                    public boolean apply(@Nullable Boolean auth) {
-                        return auth;
-                    }
-                }).keySet();
-        for (HandlerRegistration authHandlerRegistration : Sets.newHashSet(authHandlerRegistrations)) {
-            removeRegistration(authHandlerRegistration);
-        }
+                .filterValues(handlerRegistrations, auth -> auth).keySet();
+        Sets.newHashSet(authHandlerRegistrations).forEach(this::removeRegistration);
     }
 
     public void removeAllRegistrations() {
-        for (HandlerRegistration authHandlerRegistration : Sets.newHashSet(handlerRegistrations.keySet())) {
-            removeRegistration(authHandlerRegistration);
-        }
+        Sets.newHashSet(handlerRegistrations.keySet()).forEach(this::removeRegistration);
     }
 }
