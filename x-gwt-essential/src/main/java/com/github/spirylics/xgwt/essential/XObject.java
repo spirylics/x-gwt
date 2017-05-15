@@ -33,7 +33,7 @@ public class XObject {
     }
 
     @JsOverlay
-    public final Map<String, XObject> toMap() {
+    public final Map<String, Object> toMap() {
         return Arrays.stream(keys(this)).collect(Collectors.toMap(Function.identity(), k -> get(k)));
     }
 
