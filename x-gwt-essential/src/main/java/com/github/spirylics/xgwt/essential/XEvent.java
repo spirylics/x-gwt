@@ -2,6 +2,8 @@ package com.github.spirylics.xgwt.essential;
 
 import com.google.gwt.user.client.Event;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 public class XEvent {
     final Event event;
 
@@ -14,7 +16,7 @@ public class XEvent {
     }
 
     public <E extends Element> E getElement() {
-        return (E) event.getEventTarget();
+        return (E) $(getEvent()).get(0);
     }
 
 }
