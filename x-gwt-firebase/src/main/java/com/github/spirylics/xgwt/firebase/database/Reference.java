@@ -45,9 +45,15 @@ public class Reference {
 
     public native Reference startAt(Object value, String key);
 
+    public native Reference startAt(Object value);
+
     public native Reference endAt(Object value, String key);
 
+    public native Reference endAt(Object value);
+
     public native Reference equalTo(Object value, String key);
+
+    public native Reference equalTo(Object value);
 
     public native Reference push();
 
