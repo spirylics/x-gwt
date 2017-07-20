@@ -18,6 +18,7 @@ public interface PolymerElement extends GQueryElement, Base {
     @JsProperty
     Lifecycle getLifecycle();
 
+    @SuppressWarnings("unusable-by-js")
     @JsProperty
     void setLifecycle(Lifecycle lifecycle);
 

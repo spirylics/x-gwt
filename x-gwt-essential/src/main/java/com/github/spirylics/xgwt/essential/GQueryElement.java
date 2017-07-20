@@ -21,6 +21,7 @@ public interface GQueryElement extends Element {
     @JsProperty
     GQuery getGQuery();
 
+    @SuppressWarnings("unusable-by-js")
     @JsProperty
     void setGQuery(GQuery gQuery);
 
@@ -75,27 +76,30 @@ public interface GQueryElement extends Element {
                                    final Stream<Predicate<XEvent>> predicateStream) {
         final Optional<Predicate<XEvent>> predicateOpt = predicateStream.reduce(Predicate::and);
         final Predicate<XEvent> predicate = predicateOpt.orElse(e -> true);
-        final Function wrapFunction = new Function() {
-            @Override
-            public void f() {
-                XEvent xEvent = new XEvent(getEvent(), getElement());
-                if (predicate.test(xEvent)) {
-                    onFunction.e(xEvent);
-                }
+        final Fn.Arg<Event> wrapFn = event -> {
+            XEvent xEvent = new XEvent(event);
+            if (predicate.test(xEvent)) {
+                onFunction.e(xEvent);
             }
         };
         return selectors
                 .map(selector -> {
-                    $().on(eventName, selector, wrapFunction);
-                    return (HandlerRegistration) () -> $().off(eventName, selector);
+                    final Function wrapGFn = new Function() {
+                        @Override
+                        public void f() {
+                            wrapFn.e(getEvent());
+                        }
+                    };
+                    $().on(eventName, selector, wrapGFn);
+                    return (HandlerRegistration) () -> $().off(eventName, wrapGFn);
                 })
                 .reduce((h1, h2) -> () -> {
                     h1.removeHandler();
                     h2.removeHandler();
                 })
                 .orElseGet(() -> {
-                    $().on(eventName, wrapFunction);
-                    return () -> $().off(eventName, wrapFunction);
+                    addEventListener(eventName, wrapFn);
+                    return () -> removeEventListener(eventName, wrapFn);
                 });
     }
 
