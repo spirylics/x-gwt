@@ -1,12 +1,19 @@
 package com.github.spirylics.xgwt.essential;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Node;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 
+import java.util.Arrays;
 import java.util.Set;
+
+import static com.google.gwt.query.client.GQuery.$;
+import static com.google.gwt.query.client.GQuery.document;
 
 public class XGWT {
 
@@ -65,7 +72,6 @@ public class XGWT {
         return typeof $wnd[name] !== 'undefined' && $wnd[name] !== null;
     }-*/;
 
-
     public static Promise<Void, Exception> loadScript(String url, String... properties) {
         return new Promise<>((resolve, reject) -> {
             if (exists(properties)) {
@@ -84,5 +90,27 @@ public class XGWT {
                 });
             }
         });
+    }
+
+    public static Promise imports(String... urls) {
+        return new Promise<>((resolve, reject) -> GQuery.when(Arrays.stream(urls)
+                .map(url -> url.endsWith(".js") ? Ajax.loadScript(url) : Ajax.importHtml(url))
+                .toArray())
+                .done(new Function() {
+                    @Override
+                    public void f() {
+                        resolve.e(getArguments());
+                    }
+                })
+                .fail(new Function() {
+                    @Override
+                    public void f() {
+                        reject.e(getArguments());
+                    }
+                }));
+    }
+
+    public static void addCustomStyle(String include) {
+        $(document.getHead()).append((Node) Element.create("style", ImmutableMap.of("is", "custom-style", "include", include)));
     }
 }
