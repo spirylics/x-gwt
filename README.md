@@ -1,5 +1,7 @@
 #XGWT
 
+[![Build Status](https://travis-ci.org/spirylics/x-gwt.svg?branch=master)](https://travis-ci.org/spirylics/x-gwt)
+
 ## What does XGWT do ?
 
 XGWT is a light library for GWT which provides useful component often wrapped from js library.
